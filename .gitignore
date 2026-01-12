@@ -32,7 +32,15 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+
+# ESLint
+.eslintcache
 
 # Misc
 .DS_Store
 *.pem
+
+# Database
+apps/api/.data/
+*.db

@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -15,7 +15,33 @@
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": ["PORT"]
+    },
+    "db:generate": {
+      "cache": false,
+      "inputs": ["src/db/schema.ts", "drizzle.config.ts"],
+      "outputs": ["drizzle/**"]
+    },
+    "db:migrate": {
+      "cache": false,
+      "dependsOn": ["db:generate"],
+      "inputs": ["drizzle/**", ".env*"],
+      "env": ["DATABASE_URL"]
+    },
+    "db:studio": {
+      "cache": false,
+      "persistent": true,
+      "env": ["DATABASE_URL"]
+    },
+    "db:wipe": {
+      "cache": false,
+      "env": ["DATABASE_URL"]
+    },
+    "db:reset": {
+      "cache": false,
+      "dependsOn": ["db:wipe"],
+      "env": ["DATABASE_URL"]
     }
   }
 }
