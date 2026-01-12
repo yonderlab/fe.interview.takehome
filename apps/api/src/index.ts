@@ -22,10 +22,15 @@ app.get("/health", (c) => {
 });
 
 // API endpoints with OpenAPI
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.openapi(getProvidersRoute, getProviders as any);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.openapi(getPlansRoute, getPlans as any);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.openapi(getEstimateRoute, getEstimate as any);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.openapi(updateEstimateRoute, updateEstimate as any);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.openapi(finaliseEstimateRoute, finaliseEstimate as any);
 
 // OpenAPI documentation endpoint

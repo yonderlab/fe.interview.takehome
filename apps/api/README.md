@@ -223,6 +223,47 @@ All errors follow this format:
 }
 ```
 
+## Testing
+
+The project uses [Vitest](https://vitest.dev/) for testing. Tests are located in `src/**/*.test.ts`.
+
+### Running Tests
+
+- `npm run test` - Run all tests once
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:ui` - Open Vitest UI for interactive testing
+- `npm run test:coverage` - Run tests with coverage report
+
+### Test Types
+
+1. **Unit Tests** (`src/domain/*.test.ts`):
+   - Test domain logic (pricing computation, validation)
+   - Use a separate test database (`.data/test.db`)
+   - Automatically set up and tear down test data
+
+2. **Integration Tests** (`src/api.test.ts`):
+   - Test API endpoints against a running server
+   - Requires the server to be running (`npm run dev`)
+   - Tests all endpoints with real HTTP requests
+
+### Running Integration Tests
+
+Integration tests require the server to be running:
+
+```bash
+# Terminal 1: Start the server
+npm run dev
+
+# Terminal 2: Run integration tests
+npm run test -- src/api.test.ts
+```
+
+Or run all tests (unit + integration) with the server running:
+
+```bash
+npm run test
+```
+
 ## Scripts
 
 - `npm run dev` - Start the development server with hot reload
@@ -230,6 +271,10 @@ All errors follow this format:
 - `npm run start` - Start the production server
 - `npm run lint` - Run ESLint
 - `npm run check-types` - Type check the application
+- `npm run test` - Run all tests
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:ui` - Open Vitest UI
+- `npm run test:coverage` - Run tests with coverage
 - `npm run db:generate` - Generate database migrations from schema changes
 - `npm run db:migrate` - Apply pending migrations manually (usually not needed - migrations run automatically on startup)
 - `npm run db:studio` - Open Drizzle Studio to browse the database
