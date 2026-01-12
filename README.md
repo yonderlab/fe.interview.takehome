@@ -1,135 +1,155 @@
-# Turborepo starter
+# Event Ticketing System - Take Home Assessment
 
-This Turborepo starter is maintained by the Turborepo core team.
+A Turborepo monorepo containing the backend API for an event ticketing system. This repository is designed for frontend take-home assessments where candidates build a frontend against the provided backend API.
 
-## Using this example
+## Overview
 
-Run the following command:
+This monorepo contains a complete backend API implementation for an event ticketing system. The API manages providers, plans, options, add-ons, and estimates with dynamic configuration capabilities.
 
-```sh
-npx create-turbo@latest
+## What's Inside
+
+### Apps
+
+- **`apps/api`** - Event Ticketing Backend API
+  - Built with [Hono](https://hono.dev/) and Node.js
+  - SQLite database with [Drizzle ORM](https://orm.drizzle.team/)
+  - [Zod](https://zod.dev/) validation and [OpenAPI](https://www.openapis.org/) documentation
+  - Swagger UI for interactive API exploration
+  - Comprehensive test suite (unit + integration tests)
+
+### Documentation
+
+- **`design-doc.md`** - Backend API/DB design guide and specification
+- **`fe-interview-brief.md`** - Frontend take-home assessment brief
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js >= 18
+- npm >= 10.9.2
+
+### Installation
+
+```bash
+npm install
 ```
 
-## What's inside?
+### Development
 
-This Turborepo includes the following packages/apps:
+Start the API server:
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```bash
+npm run dev
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+Or start a specific app:
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+```bash
+npm run dev --filter=api
 ```
 
-### Develop
+The API will be available at `http://localhost:3002`.
 
-To develop all apps and packages, run the following command:
+### API Documentation
 
-```
-cd my-turborepo
+- **Swagger UI**: `http://localhost:3002/ui` - Interactive API documentation
+- **OpenAPI JSON**: `http://localhost:3002/doc` - Raw OpenAPI 3.0 specification
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+## Available Scripts
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+From the root directory:
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+- `npm run dev` - Start all apps in development mode
+- `npm run build` - Build all apps and packages
+- `npm run lint` - Run ESLint on all packages
+- `npm run check-types` - Type check all packages
+- `npm run test` - Run all tests
+- `npm run format` - Format code with Prettier
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+### API-Specific Scripts
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+See [`apps/api/README.md`](apps/api/README.md) for detailed API documentation and scripts.
 
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+## Project Structure
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+take-home/
+├── apps/
+│   └── api/              # Event Ticketing Backend API
+│       ├── src/
+│       │   ├── db/       # Database schema, migrations, seeding
+│       │   ├── domain/   # Business logic (pricing, validation)
+│       │   ├── routes/   # API route handlers
+│       │   └── *.test.ts # Test files
+│       └── drizzle/      # Database migrations
+├── design-doc.md         # Backend design specification
+├── fe-interview-brief.md # Frontend assessment brief
+└── turbo.json           # Turborepo configuration
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## API Overview
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+The Event Ticketing API provides endpoints for:
 
+- **Providers** - List event providers (venues)
+- **Plans** - List plans for a provider with options and add-ons
+- **Estimates** - Create, update, and finalize event estimates
+  - Dynamic plan options (seating types, food packages, date flexibility)
+  - Add-ons (AV equipment, photography, VIP hosting)
+  - Validation and blocker management
+  - Approval workflow support
+
+### Key Features
+
+- **Dynamic Configuration** - Plans expose business-level options without UI schema
+- **Server-Side Pricing** - All pricing calculations handled by the backend
+- **Validation** - Comprehensive validation with blocking reasons
+- **Approval Workflows** - Support for plans requiring manager approval
+- **OpenAPI Documentation** - Auto-generated from Zod schemas
+
+## Testing
+
+The API includes comprehensive test coverage:
+
+- **Unit Tests** - Domain logic (pricing, validation)
+- **Integration Tests** - Full API endpoint testing
+
+Run tests:
+
+```bash
+npm run test
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
+See [`apps/api/README.md`](apps/api/README.md) for detailed testing instructions.
 
-## Useful Links
+## Database
 
-Learn more about the power of Turborepo:
+The API uses SQLite with automatic migrations and seeding:
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+- Database file: `apps/api/.data/dev.db` (created automatically)
+- Migrations run automatically on server startup
+- Seed data includes 3 providers, 5 plans with varied options/add-ons
+
+## Technology Stack
+
+- **Runtime**: Node.js
+- **Framework**: [Hono](https://hono.dev/)
+- **Database**: SQLite with [Drizzle ORM](https://orm.drizzle.team/)
+- **Validation**: [Zod](https://zod.dev/) v4
+- **API Docs**: OpenAPI 3.0 + Swagger UI
+- **Testing**: [Vitest](https://vitest.dev/)
+- **Monorepo**: [Turborepo](https://turbo.build/repo)
+
+## For Frontend Candidates
+
+This backend is ready to use for frontend development. See [`fe-interview-brief.md`](fe-interview-brief.md) for the assessment requirements.
+
+The API is fully documented and can be explored via Swagger UI at `http://localhost:3002/ui` once the server is running.
+
+## Learn More
+
+- [Turborepo Documentation](https://turbo.build/repo/docs)
+- [Hono Documentation](https://hono.dev/)
+- [Drizzle ORM Documentation](https://orm.drizzle.team/)
+- [OpenAPI Specification](https://www.openapis.org/)
