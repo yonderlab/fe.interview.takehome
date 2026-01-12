@@ -1,45 +1,53 @@
 import { serve } from "@hono/node-server";
-import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
-import { z } from "zod";
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { cors } from "hono/cors";
 import { migrateOnStartup } from "./db/migrate.js";
-import { db } from "./db/index.js";
-import { items } from "./db/schema.js";
-import { eq } from "drizzle-orm";
+import { seedOnStartup } from "./db/seed.js";
+import { getProvidersRoute, getProviders } from "./routes/providers.js";
+import { getPlansRoute, getPlans } from "./routes/plans.js";
+import { getEstimateRoute, getEstimate, updateEstimateRoute, updateEstimate, finaliseEstimateRoute, finaliseEstimate } from "./routes/estimate.js";
 
-const app = new Hono();
+const app = new OpenAPIHono();
 
-// Run migrations on startup
+// Add CORS middleware for local frontend development
+app.use("*", cors());
+
+// Run migrations and seed on startup
 await migrateOnStartup();
+await seedOnStartup();
 
-app.get("/", (c) => {
-  return c.json({ message: "Hello Hono!" });
-});
-
+// Health check
 app.get("/health", (c) => {
   return c.json({ status: "ok" });
 });
 
-// Example endpoint: Create an item
-const createItemSchema = z.object({
-  name: z.string().min(1).max(255),
-});
+// API endpoints with OpenAPI
+app.openapi(getProvidersRoute, getProviders as any);
+app.openapi(getPlansRoute, getPlans as any);
+app.openapi(getEstimateRoute, getEstimate as any);
+app.openapi(updateEstimateRoute, updateEstimate as any);
+app.openapi(finaliseEstimateRoute, finaliseEstimate as any);
 
-app.post("/items", zValidator("json", createItemSchema), async (c) => {
-  const { name } = c.req.valid("json");
-  const result = await db.insert(items).values({ name }).returning();
-  return c.json(result[0], 201);
-});
-
-// Example endpoint: List all items
-app.get("/items", async (c) => {
-  const allItems = await db.select().from(items);
-  return c.json(allItems);
+// OpenAPI documentation endpoint
+app.doc("/doc", {
+  openapi: "3.0.0",
+  info: {
+    version: "1.0.0",
+    title: "Event Ticketing API",
+    description: "API for managing event ticketing estimates with dynamic plan options and add-ons",
+  },
+  servers: [
+    {
+      url: "http://localhost:3002",
+      description: "Development server",
+    },
+  ],
 });
 
 const port = Number(process.env.PORT) || 3002;
 
 console.log(`Server is running on port ${port}`);
+console.log(`OpenAPI documentation available at http://localhost:${port}/doc`);
 
 serve({
   fetch: app.fetch,
