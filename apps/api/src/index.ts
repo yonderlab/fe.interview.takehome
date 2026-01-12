@@ -1,6 +1,7 @@
 import { serve } from "@hono/node-server";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { cors } from "hono/cors";
+import { swaggerUI } from "@hono/swagger-ui";
 import { migrateOnStartup } from "./db/migrate.js";
 import { seedOnStartup } from "./db/seed.js";
 import { getProvidersRoute, getProviders } from "./routes/providers.js";
@@ -33,7 +34,7 @@ app.openapi(updateEstimateRoute, updateEstimate as any);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.openapi(finaliseEstimateRoute, finaliseEstimate as any);
 
-// OpenAPI documentation endpoint
+// OpenAPI documentation endpoint (JSON)
 app.doc("/doc", {
   openapi: "3.0.0",
   info: {
@@ -49,10 +50,14 @@ app.doc("/doc", {
   ],
 });
 
+// Swagger UI endpoint
+app.get("/ui", swaggerUI({ url: "/doc" }));
+
 const port = Number(process.env.PORT) || 3002;
 
 console.log(`Server is running on port ${port}`);
-console.log(`OpenAPI documentation available at http://localhost:${port}/doc`);
+console.log(`OpenAPI documentation (JSON) available at http://localhost:${port}/doc`);
+console.log(`Swagger UI available at http://localhost:${port}/ui`);
 
 serve({
   fetch: app.fetch,

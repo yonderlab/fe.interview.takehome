@@ -287,18 +287,32 @@ CORS is enabled for all routes to allow local frontend development. The API acce
 
 ## OpenAPI Documentation
 
-The API includes automatic OpenAPI/Swagger documentation generated from Zod schemas. The documentation is available at:
+The API includes automatic OpenAPI/Swagger documentation generated from Zod schemas.
+
+### Swagger UI
+
+Interactive API documentation is available at:
+
+```
+GET /ui
+```
+
+Visit `http://localhost:3002/ui` in your browser to explore the API with Swagger UI. You can test endpoints directly from the browser.
+
+### OpenAPI JSON
+
+The raw OpenAPI 3.0 specification in JSON format is available at:
 
 ```
 GET /doc
 ```
 
-This endpoint returns the OpenAPI 3.0 specification in JSON format. You can use this with tools like:
-- [Swagger UI](https://swagger.io/tools/swagger-ui/)
+This endpoint returns the OpenAPI specification that can be used with tools like:
 - [Scalar](https://scalar.com/)
 - [Postman](https://www.postman.com/) (import OpenAPI spec)
+- Other OpenAPI-compatible tools
 
-Example: View the documentation at `http://localhost:3002/doc`
+Example: View the JSON spec at `http://localhost:3002/doc`
 
 ## Seed Data
 
