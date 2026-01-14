@@ -45,6 +45,12 @@ export async function seedOnStartup(): Promise<void> {
         location: "Hamburg",
         logoUrl: "https://example.com/logos/venue-c.svg",
       },
+      {
+        id: "prov_legacy",
+        name: "Legacy Events Ltd",
+        location: "",
+        logoUrl: null,
+      },
     ]);
 
     // Plans
@@ -108,6 +114,18 @@ export async function seedOnStartup(): Promise<void> {
         approvalType: "manager_review",
         minParticipants: 40,
         leadTimeDays: 28,
+      },
+      // Legacy Events - Basic (edge cases for testing)
+      {
+        id: "plan_legacy_basic",
+        providerId: "prov_legacy",
+        name: "Legacy Basic Package",
+        description: "Basic package with legacy configuration options",
+        basePriceCents: 35000,
+        currency: "EUR",
+        approvalType: "none",
+        minParticipants: 15,
+        leadTimeDays: 5,
       },
     ]);
 
@@ -283,6 +301,56 @@ export async function seedOnStartup(): Promise<void> {
       },
     ]);
 
+    // Venue C Corporate - priority_level (optional, string-number values)
+    await db.insert(planOptionGroup).values({
+      id: "opt_grp_c_priority",
+      planId: "plan_c_corporate",
+      code: "priority_level",
+      description: "Service priority level",
+      required: false,
+    });
+    await db.insert(planOptionValue).values([
+      {
+        id: "opt_val_c_priority_1",
+        optionGroupId: "opt_grp_c_priority",
+        value: "1",
+        priceCents: null,
+        currency: null,
+      },
+      {
+        id: "opt_val_c_priority_2",
+        optionGroupId: "opt_grp_c_priority",
+        value: "2",
+        priceCents: 5000,
+        currency: "EUR",
+      },
+      {
+        id: "opt_val_c_priority_3",
+        optionGroupId: "opt_grp_c_priority",
+        value: "3",
+        priceCents: 10000,
+        currency: "EUR",
+      },
+    ]);
+
+    // Legacy Basic - catering_license_tier (required, unknown option code, single value)
+    await db.insert(planOptionGroup).values({
+      id: "opt_grp_legacy_license",
+      planId: "plan_legacy_basic",
+      code: "catering_license_tier",
+      description: null,
+      required: true,
+    });
+    await db.insert(planOptionValue).values([
+      {
+        id: "opt_val_legacy_license_t3",
+        optionGroupId: "opt_grp_legacy_license",
+        value: "tier_3",
+        priceCents: null,
+        currency: null,
+      },
+    ]);
+
     // Add-ons
     await db.insert(planAddon).values([
       // Venue A Premium add-ons
@@ -321,6 +389,14 @@ export async function seedOnStartup(): Promise<void> {
         planId: "plan_c_corporate",
         name: "VIP host",
         priceCents: 10000,
+        currency: "EUR",
+      },
+      // Legacy Basic add-on (free)
+      {
+        id: "addon_free_wifi",
+        planId: "plan_legacy_basic",
+        name: "Complimentary WiFi",
+        priceCents: 0,
         currency: "EUR",
       },
     ]);
