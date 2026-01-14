@@ -62,15 +62,7 @@ Plans include **options** and **add-ons** (business-level). There is **no UI sch
 ---
 
 ## Timebox
-Suggested 4-6 hours. Prioritize product clarity and dynamic config handling over pixel perfection.
-
----
-
-## Evaluation (High Level)
-- Product sense: clear hierarchy, good defaults, and thoughtful flow
-- Engineering: component structure, state management, and robustness
-- Design: layout, readability, and polish
-- Accessibility: focus states, semantics, and keyboard usability
+Suggested 1-2 hours. Prioritize product clarity and dynamic config handling over pixel perfection.
 
 ---
 
@@ -81,8 +73,3 @@ Suggested 4-6 hours. Prioritize product clarity and dynamic config handling over
 - "Why is this required?" helper copy based on rules
 
 ---
-
-## Technical Context (SQLite + Validation)
-- The backend uses **SQLite**. Enum-like fields are stored as text and validated server-side.
-- Expect the API to return only business options and add-ons (no UI schema).
-- Plans are **seeded**; you cannot create or edit plans in the UI.
