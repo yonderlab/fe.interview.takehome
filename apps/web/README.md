@@ -46,15 +46,38 @@ Check TypeScript types:
 npm run check-types
 ```
 
+### Test
+
+Run tests with Jest:
+
+```bash
+npm test
+```
+
+Run tests in watch mode:
+
+```bash
+npm run test:watch
+```
+
+Run tests with coverage:
+
+```bash
+npm run test:coverage
+```
+
 ## Project Structure
 
 ```
 apps/web/
 ├── app/              # Next.js App Router
+│   ├── __tests__/   # Test files
 │   ├── layout.tsx    # Root layout
 │   ├── page.tsx      # Home page
 │   └── globals.css   # Global styles with Tailwind
 ├── public/           # Static assets
+├── jest.config.js    # Jest configuration
+├── jest.setup.js      # Jest setup file
 ├── tailwind.config.ts # Tailwind configuration
 ├── postcss.config.js  # PostCSS configuration
 └── package.json      # Dependencies and scripts
