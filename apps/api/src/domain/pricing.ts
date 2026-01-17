@@ -1,5 +1,10 @@
 import { db } from "../db/index.js";
-import { eventPlan, planAddon, planOptionValue, planOptionGroup } from "../db/schema.js";
+import {
+  eventPlan,
+  planAddon,
+  planOptionValue,
+  planOptionGroup,
+} from "../db/schema.js";
 import { eq, inArray, and } from "drizzle-orm";
 
 export interface PricingResult {
@@ -19,7 +24,7 @@ export interface EstimateSelections {
  */
 export async function computePricing(
   planId: string,
-  selections: EstimateSelections
+  selections: EstimateSelections,
 ): Promise<PricingResult> {
   // Get plan
   const [plan] = await db
@@ -38,18 +43,20 @@ export async function computePricing(
   // Add add-on prices
   let addonsTotal = 0;
   if (selections.addons && selections.addons.length > 0) {
-    const validAddonIds = selections.addons.filter((id): id is string => typeof id === "string");
+    const validAddonIds = selections.addons.filter(
+      (id): id is string => typeof id === "string",
+    );
     const addons = await db
       .select()
       .from(planAddon)
       .where(
-        and(
-          eq(planAddon.planId, planId),
-          inArray(planAddon.id, validAddonIds)
-        )
+        and(eq(planAddon.planId, planId), inArray(planAddon.id, validAddonIds)),
       );
 
-    addonsTotal = addons.reduce((sum: number, addon) => sum + addon.priceCents, 0);
+    addonsTotal = addons.reduce(
+      (sum: number, addon) => sum + addon.priceCents,
+      0,
+    );
     total += addonsTotal;
   }
 
@@ -70,8 +77,8 @@ export async function computePricing(
         .where(
           and(
             eq(planOptionValue.optionGroupId, group.id),
-            eq(planOptionValue.value, selectedValue)
-          )
+            eq(planOptionValue.value, selectedValue),
+          ),
         )
         .limit(1);
 

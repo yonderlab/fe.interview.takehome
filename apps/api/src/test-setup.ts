@@ -10,7 +10,7 @@ export async function startTestServer(): Promise<void> {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
     const apiRoot = join(__dirname, "..");
-    
+
     // Set test database
     process.env.DATABASE_URL = "file:.data/test.db";
     process.env.PORT = "3002";
@@ -30,7 +30,10 @@ export async function startTestServer(): Promise<void> {
 
     const checkOutput = (data: Buffer) => {
       const output = data.toString();
-      if (output.includes("Server is running") || output.includes("port 3002")) {
+      if (
+        output.includes("Server is running") ||
+        output.includes("port 3002")
+      ) {
         if (!serverReady) {
           serverReady = true;
           // Give server a moment to fully start

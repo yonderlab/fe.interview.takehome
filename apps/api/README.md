@@ -37,6 +37,7 @@ GET /providers
 Returns a list of all event providers.
 
 **Response:**
+
 ```json
 {
   "items": [
@@ -59,6 +60,7 @@ GET /plans?provider_id=prov_a
 Returns plans for a specific provider. The `provider_id` query parameter is required.
 
 **Response:**
+
 ```json
 {
   "items": [
@@ -94,6 +96,7 @@ Returns plans for a specific provider. The `provider_id` query parameter is requ
 ```
 
 **Error Response (400):**
+
 ```json
 {
   "error": {
@@ -112,6 +115,7 @@ GET /estimate
 Returns the current estimate (or creates a default one if none exists).
 
 **Response:**
+
 ```json
 {
   "id": "est_demo",
@@ -143,6 +147,7 @@ PUT /estimate
 Updates the current estimate with a new plan and selections.
 
 **Request Body:**
+
 ```json
 {
   "plan_id": "plan_a_premium",
@@ -155,6 +160,7 @@ Updates the current estimate with a new plan and selections.
 ```
 
 **Response:**
+
 ```json
 {
   "id": "est_demo",
@@ -175,6 +181,7 @@ Updates the current estimate with a new plan and selections.
 ```
 
 **Error Response (400):**
+
 ```json
 {
   "error": {
@@ -193,6 +200,7 @@ POST /estimate/finalise
 Finalises the current estimate. If the plan requires approval, the status will be set to `pending_approval`. Otherwise, it will be set to `finalised`.
 
 **Response:**
+
 ```json
 {
   "id": "est_demo",
@@ -201,6 +209,7 @@ Finalises the current estimate. If the plan requires approval, the status will b
 ```
 
 **Error Response (400):**
+
 ```json
 {
   "error": {
@@ -308,6 +317,7 @@ GET /doc
 ```
 
 This endpoint returns the OpenAPI specification that can be used with tools like:
+
 - [Scalar](https://scalar.com/)
 - [Postman](https://www.postman.com/) (import OpenAPI spec)
 - Other OpenAPI-compatible tools

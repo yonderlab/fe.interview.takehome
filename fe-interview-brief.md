@@ -1,6 +1,7 @@
 # Event Ticketing Take-Home (Frontend)
 
 ## Summary
+
 Build a multi-step "Event Package Builder" for employers to configure a company event package. Plans differ by venue and expose different **business options** (add-ons, seating types, food packages, date flexibility). The UI must adapt to these dynamic options, show pricing updates, and handle estimate status transitions.
 
 You are given an API (or mock data) backed by **SQLite**. Plans and providers are **seeded and read-only**. Focus on product thinking and clarity as much as engineering quality.
@@ -8,6 +9,7 @@ You are given an API (or mock data) backed by **SQLite**. Plans and providers ar
 ---
 
 ## Goals
+
 - Help an employer select a provider and plan, configure options, and submit to finalize.
 - Adapt to plan-specific configuration fields delivered by the API.
 - Make constraints and required inputs obvious and easy to complete.
@@ -15,12 +17,15 @@ You are given an API (or mock data) backed by **SQLite**. Plans and providers ar
 ---
 
 ## Timebox
+
 Suggested **1-2 hours** if you are using AI first to generate the code. If you are not using AI please don't spend more than 2 hours working on this. **We expect senior candidates to demonstrate depth over breadth. It's better to implement fewer features with robust error handling, accessibility, and clear reasoning than to cover everything superficially.**
 
 ---
 
 ## Scope
+
 Implement the following screens (or equivalent flow):
+
 1. Provider + plan selection
 2. Plan configuration (dynamic **options**)
 3. Review + submit
@@ -29,7 +34,9 @@ Implement the following screens (or equivalent flow):
 ---
 
 ## API Inputs (High Level)
+
 You will receive endpoints similar to:
+
 - `GET /providers`
 - `GET /plans?provider_id=...`
 - `GET /estimate`
@@ -41,6 +48,7 @@ Plans include **options** and **add-ons** (business-level). There is **no UI sch
 ---
 
 ## Required UI Behaviors
+
 - Render plan-specific **options** and add-ons (how you render is your choice).
 - Reset or warn when switching plans if selections become incompatible.
 - Display "required" vs "optional" clearly.
@@ -51,6 +59,7 @@ Plans include **options** and **add-ons** (business-level). There is **no UI sch
 ---
 
 ## Edge Cases to Handle
+
 - No providers returned
 - Provider has no plans
 - Estimate not found (or status mismatch)
@@ -94,6 +103,7 @@ Your UI should handle all of these gracefully without crashing or displaying bro
 ---
 
 ## Deliverables
+
 - A working UI (app or SPA) that demonstrates the flow
 - A short README describing decisions, tradeoffs, and next steps
 - Optional: tests if you have time (explain if not)
@@ -102,13 +112,13 @@ Your UI should handle all of these gracefully without crashing or displaying bro
 
 ## Evaluation Criteria
 
-| Dimension | What We're Looking For |
-|-----------|------------------------|
+| Dimension         | What We're Looking For                                                                                   |
+| ----------------- | -------------------------------------------------------------------------------------------------------- |
 | **Product Sense** | Clear hierarchy, thoughtful defaults, constraint visibility, informed decision-making on ambiguous cases |
-| **Engineering** | Component structure, state management, error handling, defensive coding against API quirks |
-| **Accessibility** | Keyboard navigation, focus management, ARIA usage, screen reader compatibility |
-| **Robustness** | Graceful handling of edge cases, empty states, loading states, and errors |
-| **Communication** | Clear README documenting decisions, tradeoffs, and reasoning |
+| **Engineering**   | Component structure, state management, error handling, defensive coding against API quirks               |
+| **Accessibility** | Keyboard navigation, focus management, ARIA usage, screen reader compatibility                           |
+| **Robustness**    | Graceful handling of edge cases, empty states, loading states, and errors                                |
+| **Communication** | Clear README documenting decisions, tradeoffs, and reasoning                                             |
 
 ---
 
@@ -118,7 +128,7 @@ Your README must include a section addressing:
 
 1. **Information hierarchy**: How did you decide what information to emphasize vs. de-emphasize? Why?
 
-2. **Constraint communication**: Plans have different constraints (approval required, minimum participants, lead time). How do you surface these so users can make informed choices *before* selecting?
+2. **Constraint communication**: Plans have different constraints (approval required, minimum participants, lead time). How do you surface these so users can make informed choices _before_ selecting?
 
 3. **Error recovery**: When something goes wrong (network error, validation failure), what is the user's path forward? How do you preserve their work?
 
@@ -138,12 +148,14 @@ Accessibility is a first-class requirement, not a nice-to-have:
 - **Form semantics**: Proper labels, fieldsets, and error associations
 
 **Deliverable**: Include a brief accessibility summary in your README noting:
+
 - Tools used for testing (e.g., axe, Lighthouse, VoiceOver)
 - Any known accessibility gaps and why they remain
 
 ---
 
 ## Optional Enhancements (if time allows)
+
 - Plan comparison view
 - Autosave or optimistic updates on configuration
 - Loading skeletons for plan details

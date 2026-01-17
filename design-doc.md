@@ -9,7 +9,7 @@ This guide outlines a minimal backend and data model to power the Event Ticketin
 These decisions are intentional and should be shared with candidates and reviewers:
 
 - **Plans are seeded, read-only.**  
-  We want to evaluate how candidates handle *dynamic plan variability* in a purchasing flow, not how they build CRUD/admin tooling.
+  We want to evaluate how candidates handle _dynamic plan variability_ in a purchasing flow, not how they build CRUD/admin tooling.
 
 - **Options are modeled as business capabilities.**  
   The API returns what options exist and which values are allowed, but does **not** prescribe how to render them. This tests product thinking + UI adaptability.
@@ -26,6 +26,7 @@ These decisions are intentional and should be shared with candidates and reviewe
 ---
 
 ## Core Concepts
+
 - **Provider**: Venue or event provider
 - **Plan**: Package offered by a provider
 - **Options**: Business-level configurable choices (e.g., add-ons, seating types, food packages)
@@ -126,6 +127,7 @@ estimate_blocker (
 ---
 
 ## Relations
+
 - `event_provider` 1 -- N `event_plan`
 - `event_plan` 1 -- N `plan_addon`
 - `event_plan` 1 -- N `plan_option_group`
@@ -140,6 +142,7 @@ estimate_blocker (
 The backend exposes **business options** and allowed values, not UI field schemas. The candidate decides how to render them.
 
 Example response fragment for a plan **with** add-ons and seating/food options:
+
 ```json
 {
   "options": [
@@ -160,12 +163,18 @@ Example response fragment for a plan **with** add-ons and seating/food options:
     }
   ],
   "addons": [
-    { "id": "addon_av", "name": "Extra AV", "price_cents": 15000, "currency": "EUR" }
+    {
+      "id": "addon_av",
+      "name": "Extra AV",
+      "price_cents": 15000,
+      "currency": "EUR"
+    }
   ]
 }
 ```
 
 Example response fragment for a plan **without** add-ons or optional packages:
+
 ```json
 {
   "options": [],
@@ -178,27 +187,39 @@ Example response fragment for a plan **without** add-ons or optional packages:
 ## API Endpoints
 
 ### Plan Creation
+
 Plan creation is **not** exposed to candidates. Plans are **seeded in the DB** and are read‑only for the take‑home.
 The goal is to evaluate how candidates handle **dynamic plan options** and estimate flows, not admin tooling.
 
 ### List Providers
+
 ```
 GET /providers
 ```
+
 Response:
+
 ```json
 {
   "items": [
-    { "id": "prov_a", "name": "Venue A", "location": "Berlin", "logo_url": "..." }
+    {
+      "id": "prov_a",
+      "name": "Venue A",
+      "location": "Berlin",
+      "logo_url": "..."
+    }
   ]
 }
 ```
 
 ### List Plans
+
 ```
 GET /plans?provider_id=prov_a
 ```
+
 Response:
+
 ```json
 {
   "items": [
@@ -220,10 +241,13 @@ Response:
 ```
 
 ### Get Estimate
+
 ```
 GET /estimate
 ```
+
 Response:
+
 ```json
 {
   "id": "est_123",
@@ -236,10 +260,13 @@ Response:
 ```
 
 ### Update Estimate
+
 ```
 PUT /estimate
 ```
+
 Body:
+
 ```json
 {
   "plan_id": "plan_b",
@@ -250,22 +277,32 @@ Body:
   }
 }
 ```
+
 Response:
+
 ```json
 {
   "id": "est_123",
   "status": "draft",
   "selections": { "...": "..." },
-  "pricing": { "base": 70000, "addons": 15000, "total": 85000, "currency": "EUR" },
+  "pricing": {
+    "base": 70000,
+    "addons": 15000,
+    "total": 85000,
+    "currency": "EUR"
+  },
   "blocking_reasons": []
 }
 ```
 
 ### Finalise Estimate
+
 ```
 POST /estimate/finalise
 ```
+
 Response (approval required):
+
 ```json
 {
   "id": "est_123",
@@ -276,6 +313,7 @@ Response (approval required):
 ---
 
 ## Plan Seeding (Required)
+
 - Seed 2–4 providers with multiple plans each.
 - Ensure plans differ in option groups and add‑ons (some have none).
 - Do **not** expose any create/update endpoints for plans or providers.
@@ -290,20 +328,22 @@ Response (approval required):
 
 Use this as a starting point for seed data. The goal is to create visible differences across plans.
 
-| Provider | Plan | Options | Add-ons | Approval | Notes |
-|---|---|---|---|---|---|
-| Venue A | Standard | none | none | none | simplest flow |
-| Venue A | Premium | seating_type, food_package | AV, photography | manager_review | approvals + addons |
-| Venue B | Essentials | seating_type | none | none | required option |
-| Venue B | Flex | seating_type, date_flex_window_days | host | none | date flexibility |
-| Venue C | Corporate | food_package | AV, VIP host | manager_review | richer config |
+| Provider | Plan       | Options                             | Add-ons         | Approval       | Notes              |
+| -------- | ---------- | ----------------------------------- | --------------- | -------------- | ------------------ |
+| Venue A  | Standard   | none                                | none            | none           | simplest flow      |
+| Venue A  | Premium    | seating_type, food_package          | AV, photography | manager_review | approvals + addons |
+| Venue B  | Essentials | seating_type                        | none            | none           | required option    |
+| Venue B  | Flex       | seating_type, date_flex_window_days | host            | none           | date flexibility   |
+| Venue C  | Corporate  | food_package                        | AV, VIP host    | manager_review | richer config      |
 
 Example option groups:
+
 - `seating_type`: values `open`, `reserved` (required)
 - `food_package`: values `none`, `light`, `full`
 - `date_flex_window_days`: values `0`, `7`, `30`
 
 Example add-ons:
+
 - `addon_av` (Extra AV)
 - `addon_photo` (Photography)
 - `addon_host` (VIP host)
@@ -311,28 +351,31 @@ Example add-ons:
 ---
 
 ## Validation Rules (Examples)
+
 - `min_participants` must be met
 - required options (by `option_group.required`) must be present
 - For approval-required plans, `finalise` moves to `pending_approval`
 
 ### Zod Validation (Required for SQLite)
+
 Use Zod to validate enum-like fields and payload shapes on read/write:
 
 ```ts
 const estimateStatusSchema = z.enum([
-  'draft',
-  'submitted',
-  'quote_available',
-  'pending_approval',
-  'finalised',
-  'rejected',
-  'expired',
+  "draft",
+  "submitted",
+  "quote_available",
+  "pending_approval",
+  "finalised",
+  "rejected",
+  "expired",
 ]);
 
-const approvalTypeSchema = z.enum(['none', 'manager_review']);
+const approvalTypeSchema = z.enum(["none", "manager_review"]);
 ```
 
 Validate:
+
 - `event_estimate.status`
 - `event_plan.approval_type`
 - any option/add-on references in `selections`
@@ -340,6 +383,7 @@ Validate:
 ---
 
 ## Error Shapes (Example)
+
 ```json
 {
   "error": {
@@ -355,15 +399,16 @@ Validate:
 
 These are the **only** endpoints exposed to candidates:
 
-- `GET /providers`  
-- `GET /plans?provider_id=...`  
-- `GET /estimate`  
-- `PUT /estimate`  
-- `POST /estimate/finalise`  
+- `GET /providers`
+- `GET /plans?provider_id=...`
+- `GET /estimate`
+- `PUT /estimate`
+- `POST /estimate/finalise`
 
 ---
 
 ## Notes for FE
+
 - Treat options/addons as business capabilities, not UI fields.
 - There is no UI schema. Candidate chooses how to render options.
 - Always handle unknown option codes gracefully.

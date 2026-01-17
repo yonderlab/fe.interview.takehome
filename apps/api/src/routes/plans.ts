@@ -1,6 +1,11 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import { db } from "../db/index.js";
-import { eventPlan, planAddon, planOptionGroup, planOptionValue } from "../db/schema.js";
+import {
+  eventPlan,
+  planAddon,
+  planOptionGroup,
+  planOptionValue,
+} from "../db/schema.js";
 import { eq } from "drizzle-orm";
 import { PlansResponseSchema, ErrorSchema } from "../domain/schemas.js";
 import type { Context } from "hono";
@@ -10,17 +15,21 @@ export const getPlansRoute = createRoute({
   path: "/plans",
   tags: ["Plans"],
   summary: "List plans for a provider",
-  description: "Returns plans for a specific provider with their options and add-ons",
+  description:
+    "Returns plans for a specific provider with their options and add-ons",
   request: {
     query: z.object({
-      provider_id: z.string().min(1).openapi({
-        param: {
-          name: "provider_id",
-          in: "query",
-        },
-        example: "prov_a",
-        description: "Provider ID",
-      }),
+      provider_id: z
+        .string()
+        .min(1)
+        .openapi({
+          param: {
+            name: "provider_id",
+            in: "query",
+          },
+          example: "prov_a",
+          description: "Provider ID",
+        }),
     }),
   },
   responses: {
@@ -44,7 +53,8 @@ export const getPlansRoute = createRoute({
 });
 
 export async function getPlans(c: Context) {
-  const providerId = (c.req.valid("query" as never) as { provider_id: string }).provider_id;
+  const providerId = (c.req.valid("query" as never) as { provider_id: string })
+    .provider_id;
 
   // Get plans for this provider
   const plans = await db
@@ -75,7 +85,7 @@ export async function getPlans(c: Context) {
             required: group.required,
             values: values.map((v) => v.value),
           };
-        })
+        }),
       );
 
       // Get add-ons
@@ -102,7 +112,7 @@ export async function getPlans(c: Context) {
           currency: a.currency,
         })),
       };
-    })
+    }),
   );
 
   return c.json({

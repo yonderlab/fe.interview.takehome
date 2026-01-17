@@ -88,8 +88,8 @@ describe("computePricing", () => {
 
   it("should throw error for non-existent plan", async () => {
     const selections: EstimateSelections = { addons: [] };
-    await expect(computePricing("nonexistent_plan", selections)).rejects.toThrow(
-      "Plan nonexistent_plan not found"
-    );
+    await expect(
+      computePricing("nonexistent_plan", selections),
+    ).rejects.toThrow("Plan nonexistent_plan not found");
   });
 });

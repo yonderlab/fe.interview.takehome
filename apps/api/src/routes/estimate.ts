@@ -2,7 +2,12 @@ import { createRoute } from "@hono/zod-openapi";
 import { db } from "../db/index.js";
 import { eventEstimate, estimateBlocker, eventPlan } from "../db/schema.js";
 import { eq } from "drizzle-orm";
-import { updateEstimateSchema, EstimateSchema, FinaliseEstimateResponseSchema, ErrorSchema } from "../domain/schemas.js";
+import {
+  updateEstimateSchema,
+  EstimateSchema,
+  FinaliseEstimateResponseSchema,
+  ErrorSchema,
+} from "../domain/schemas.js";
 import { computePricing, EstimateSelections } from "../domain/pricing.js";
 import { validateEstimate, saveBlockers } from "../domain/validation.js";
 import { sql } from "drizzle-orm";
@@ -15,7 +20,8 @@ export const getEstimateRoute = createRoute({
   path: "/estimate",
   tags: ["Estimates"],
   summary: "Get current estimate",
-  description: "Returns the current estimate or creates a default one if none exists",
+  description:
+    "Returns the current estimate or creates a default one if none exists",
   responses: {
     200: {
       content: {
@@ -84,7 +90,8 @@ export const finaliseEstimateRoute = createRoute({
   path: "/estimate/finalise",
   tags: ["Estimates"],
   summary: "Finalise estimate",
-  description: "Finalises the current estimate. If the plan requires approval, status will be set to pending_approval, otherwise finalised",
+  description:
+    "Finalises the current estimate. If the plan requires approval, status will be set to pending_approval, otherwise finalised",
   responses: {
     200: {
       content: {
@@ -145,7 +152,7 @@ export async function getEstimate(c: Context) {
             message: "No plans available",
           },
         },
-        500
+        500,
       );
     }
 
@@ -173,7 +180,7 @@ export async function getEstimate(c: Context) {
           message: "Failed to create estimate",
         },
       },
-      500
+      500,
     );
   }
 
@@ -192,7 +199,7 @@ export async function getEstimate(c: Context) {
           message: "Plan not found",
         },
       },
-      500
+      500,
     );
   }
 
@@ -224,18 +231,27 @@ export async function getEstimate(c: Context) {
  * Update the current estimate.
  */
 export async function updateEstimate(c: Context) {
-  const body = c.req.valid("json" as never) as { plan_id: string; selections: Record<string, unknown> };
+  const body = c.req.valid("json" as never) as {
+    plan_id: string;
+    selections: Record<string, unknown>;
+  };
   const { plan_id, selections: rawSelections } = body;
 
   // Convert selections to proper type (passthrough returns unknown values)
-  const addons = Array.isArray(rawSelections.addons) ? rawSelections.addons : [];
+  const addons = Array.isArray(rawSelections.addons)
+    ? rawSelections.addons
+    : [];
   const selections: EstimateSelections = {
     addons: addons.filter((id): id is string => typeof id === "string"),
     ...Object.fromEntries(
-      Object.entries(rawSelections).filter(([key]) => key !== "addons").map(([key, value]) => [
-        key,
-        typeof value === "string" || Array.isArray(value) ? value : String(value),
-      ])
+      Object.entries(rawSelections)
+        .filter(([key]) => key !== "addons")
+        .map(([key, value]) => [
+          key,
+          typeof value === "string" || Array.isArray(value)
+            ? value
+            : String(value),
+        ]),
     ),
   };
 
@@ -292,7 +308,7 @@ export async function updateEstimate(c: Context) {
           message: "Failed to update estimate",
         },
       },
-      500
+      500,
     );
   }
 
@@ -336,7 +352,7 @@ export async function finaliseEstimate(c: Context) {
           message: "No estimate found",
         },
       },
-      404
+      404,
     );
   }
 
@@ -354,7 +370,7 @@ export async function finaliseEstimate(c: Context) {
           message: `Cannot finalise estimate: ${blockers.map((b) => b.reason).join("; ")}`,
         },
       },
-      400
+      400,
     );
   }
 
@@ -373,7 +389,7 @@ export async function finaliseEstimate(c: Context) {
           message: "Plan not found",
         },
       },
-      500
+      500,
     );
   }
 
@@ -402,7 +418,7 @@ export async function finaliseEstimate(c: Context) {
           message: "Failed to finalise estimate",
         },
       },
-      500
+      500,
     );
   }
 
