@@ -65,9 +65,7 @@ apps/web/
 This project uses Tailwind CSS for styling. You can use Tailwind utility classes directly in your components.
 
 Example:
-```tsx
-<div className="bg-blue-500 text-white p-4 rounded-lg">
-  Hello Tailwind!
-</div>
-```
 
+```tsx
+<div className="bg-blue-500 text-white p-4 rounded-lg">Hello Tailwind!</div>
+```
