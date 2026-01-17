@@ -14,3 +14,7 @@ Cursor > Composer > Prompt "Create a Nextjs application inside /apps folder and 
 
 Command executed:
 npx create-next-app@latest web --typescript --tailwind --no-eslint --app --no-src-dir --import-alias "@/\*"
+
+## 4. Generate context explanation toa accelerate domain comprehension
+
+Cursor > Composer > Prompt "Generate a markdown explaining the domain entities, their relationships, with examples and diagrams".
