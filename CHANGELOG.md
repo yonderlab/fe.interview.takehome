@@ -34,6 +34,8 @@ Cursor > Composer > Prompt "Generate a markdown explaining the domain entities, 
 - I have created tests only in the EstimatesManagement feature components to showcase my testing skills.
 - I have disable limting checks in the web project due to time constrain. I would NEVER do this in a real project.
 - In a real project I would have added testing code coverage checks in the CI, security scans (with snyk or similar), code maintainability scans (like code climate or similar), etc.
+- I have fixed some last-minute bugs with cursor LLMs and I would have to refactor more the code generated, but skipped it because of time constrains.
+- I would love to have more time to provide better feedback to the user when submits a plan.
 
 **Some design/architecture decisions:**
 
