@@ -1,16 +1,22 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { EstimatesManagement } from "@/components/EstimatesManagement";
+
 export default function Home() {
+  const router = useRouter();
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
-        <h1 className="text-4xl font-bold text-center mb-8">
-          Welcome to Next.js
-        </h1>
-        <p className="text-center text-gray-600 dark:text-gray-400">
-          Get started by editing{" "}
-          <code className="font-mono font-bold bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
-            app/page.tsx
-          </code>
-        </p>
+    <main className="min-h-screen bg-gray-50 p-8">
+      <div className="max-w-7xl mx-auto">
+        <EstimatesManagement
+          onCreateClick={(estimateId: string) => {
+            router.push(`/estimate/${estimateId}`);
+          }}
+          onClick={(estimateId: string) => {
+            router.push(`/estimate/${estimateId}`);
+          }}
+        />
       </div>
     </main>
   );

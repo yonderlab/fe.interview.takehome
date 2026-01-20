@@ -13,6 +13,14 @@ import {
   updateEstimate,
   finaliseEstimateRoute,
   finaliseEstimate,
+  listEstimatesRoute,
+  listEstimates,
+  createEstimateRoute,
+  createEstimate,
+  getEstimateByIdRoute,
+  getEstimateById,
+  deleteEstimateRoute,
+  deleteEstimate,
 } from "./routes/estimate.js";
 
 const app = new OpenAPIHono();
@@ -40,6 +48,14 @@ app.openapi(getEstimateRoute, getEstimate as any);
 app.openapi(updateEstimateRoute, updateEstimate as any);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.openapi(finaliseEstimateRoute, finaliseEstimate as any);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.openapi(listEstimatesRoute, listEstimates as any);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.openapi(createEstimateRoute, createEstimate as any);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.openapi(getEstimateByIdRoute, getEstimateById as any);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.openapi(deleteEstimateRoute, deleteEstimate as any);
 
 // OpenAPI documentation endpoint (JSON)
 app.doc("/doc", {

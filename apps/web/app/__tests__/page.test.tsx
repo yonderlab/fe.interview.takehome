@@ -1,23 +1,22 @@
-import { render, screen } from '@testing-library/react'
-import Home from '../page'
+import { render, screen } from "@testing-library/react";
+import Home from "../page";
 
-describe('Home', () => {
-  it('renders a heading', () => {
-    render(<Home />)
+describe("Home", () => {
+  it("renders a heading", () => {
+    render(<Home />);
 
-    const heading = screen.getByRole('heading', {
+    const heading = screen.getByRole("heading", {
       name: /welcome to next\.js/i,
-    })
+    });
 
-    expect(heading).toBeInTheDocument()
-  })
+    expect(heading).toBeInTheDocument();
+  });
 
-  it('renders the code snippet', () => {
-    render(<Home />)
+  it("renders the code snippet", () => {
+    render(<Home />);
 
-    const code = screen.getByText(/app\/page\.tsx/i)
+    const code = screen.getByText(/app\/page\.tsx/i);
 
-    expect(code).toBeInTheDocument()
-  })
-})
-
+    expect(code).toBeInTheDocument();
+  });
+});

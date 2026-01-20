@@ -1,11 +1,14 @@
 import { createRoute } from "@hono/zod-openapi";
+import { z } from "zod";
 import { db } from "../db/index.js";
 import { eventEstimate, estimateBlocker, eventPlan } from "../db/schema.js";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import {
   updateEstimateSchema,
   EstimateSchema,
   FinaliseEstimateResponseSchema,
+  EstimatesResponseSchema,
+  CreateEstimateResponseSchema,
   ErrorSchema,
 } from "../domain/schemas.js";
 import { computePricing, EstimateSelections } from "../domain/pricing.js";
@@ -152,7 +155,7 @@ export async function getEstimate(c: Context) {
             message: "No plans available",
           },
         },
-        500,
+        500
       );
     }
 
@@ -180,7 +183,7 @@ export async function getEstimate(c: Context) {
           message: "Failed to create estimate",
         },
       },
-      500,
+      500
     );
   }
 
@@ -199,7 +202,7 @@ export async function getEstimate(c: Context) {
           message: "Plan not found",
         },
       },
-      500,
+      500
     );
   }
 
@@ -251,7 +254,7 @@ export async function updateEstimate(c: Context) {
           typeof value === "string" || Array.isArray(value)
             ? value
             : String(value),
-        ]),
+        ])
     ),
   };
 
@@ -308,7 +311,26 @@ export async function updateEstimate(c: Context) {
           message: "Failed to update estimate",
         },
       },
-      500,
+      500
+    );
+  }
+
+  // Get plan info
+  const [plan] = await db
+    .select()
+    .from(eventPlan)
+    .where(eq(eventPlan.id, estimate.planId))
+    .limit(1);
+
+  if (!plan) {
+    return c.json(
+      {
+        error: {
+          code: "internal_error",
+          message: "Plan not found",
+        },
+      },
+      500
     );
   }
 
@@ -321,6 +343,10 @@ export async function updateEstimate(c: Context) {
   return c.json({
     id: estimate.id,
     status: estimate.status,
+    plan: {
+      id: plan.id,
+      name: plan.name,
+    },
     selections: estimate.selections as Record<string, unknown>,
     pricing: estimate.pricing as {
       base: number;
@@ -352,7 +378,7 @@ export async function finaliseEstimate(c: Context) {
           message: "No estimate found",
         },
       },
-      404,
+      404
     );
   }
 
@@ -370,7 +396,7 @@ export async function finaliseEstimate(c: Context) {
           message: `Cannot finalise estimate: ${blockers.map((b) => b.reason).join("; ")}`,
         },
       },
-      400,
+      400
     );
   }
 
@@ -389,7 +415,7 @@ export async function finaliseEstimate(c: Context) {
           message: "Plan not found",
         },
       },
-      500,
+      500
     );
   }
 
@@ -418,7 +444,7 @@ export async function finaliseEstimate(c: Context) {
           message: "Failed to finalise estimate",
         },
       },
-      500,
+      500
     );
   }
 
@@ -426,4 +452,410 @@ export async function finaliseEstimate(c: Context) {
     id: updatedEstimate.id,
     status: updatedEstimate.status,
   });
+}
+
+export const listEstimatesRoute = createRoute({
+  method: "get",
+  path: "/estimates",
+  tags: ["Estimates"],
+  summary: "List all estimates",
+  description: "Returns all estimates for the demo employer",
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: EstimatesResponseSchema,
+        },
+      },
+      description: "List of estimates",
+    },
+    500: {
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+      description: "Internal error",
+    },
+  },
+});
+
+export const createEstimateRoute = createRoute({
+  method: "post",
+  path: "/estimates",
+  tags: ["Estimates"],
+  summary: "Create a new estimate",
+  description: "Creates a new estimate with default values",
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: CreateEstimateResponseSchema,
+        },
+      },
+      description: "Created estimate",
+    },
+    500: {
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+      description: "Internal error",
+    },
+  },
+});
+
+export const getEstimateByIdRoute = createRoute({
+  method: "get",
+  path: "/estimates/{id}",
+  tags: ["Estimates"],
+  summary: "Get estimate by ID",
+  description: "Returns a specific estimate by its ID",
+  request: {
+    params: z.object({
+      id: z.string().openapi({ example: "est_123" }),
+    }),
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: EstimateSchema,
+        },
+      },
+      description: "Estimate found",
+    },
+    404: {
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+      description: "Estimate not found",
+    },
+    500: {
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+      description: "Internal error",
+    },
+  },
+});
+
+/**
+ * List all estimates for the demo employer.
+ */
+export async function listEstimates(c: Context) {
+  const estimates = await db
+    .select()
+    .from(eventEstimate)
+    .where(eq(eventEstimate.employerId, DEMO_EMPLOYER_ID))
+    .orderBy(desc(eventEstimate.updatedAt));
+
+  // Get plan info and blockers for each estimate
+  const estimatesWithDetails = await Promise.all(
+    estimates.map(async (estimate) => {
+      const [plan] = await db
+        .select()
+        .from(eventPlan)
+        .where(eq(eventPlan.id, estimate.planId))
+        .limit(1);
+
+      if (!plan) {
+        return null;
+      }
+
+      const blockers = await db
+        .select()
+        .from(estimateBlocker)
+        .where(eq(estimateBlocker.estimateId, estimate.id));
+
+      return {
+        id: estimate.id,
+        status: estimate.status,
+        plan: {
+          id: plan.id,
+          name: plan.name,
+        },
+        selections: estimate.selections as Record<string, unknown>,
+        pricing: estimate.pricing as {
+          base: number;
+          addons: number;
+          total: number;
+          currency: string;
+        },
+        blocking_reasons: blockers.map((b) => b.reason),
+      };
+    })
+  );
+
+  const validEstimates = estimatesWithDetails.filter(
+    (e): e is NonNullable<typeof e> => e !== null
+  );
+
+  return c.json({
+    items: validEstimates,
+  });
+}
+
+/**
+ * Get estimate by ID.
+ */
+export async function getEstimateById(c: Context) {
+  const { id } = c.req.valid("param" as never) as { id: string };
+
+  const estimate = await db
+    .select()
+    .from(eventEstimate)
+    .where(eq(eventEstimate.id, id))
+    .limit(1)
+    .then((rows) => rows[0]);
+
+  if (!estimate) {
+    return c.json(
+      {
+        error: {
+          code: "not_found",
+          message: "Estimate not found",
+        },
+      },
+      404
+    );
+  }
+
+  // Check if estimate belongs to demo employer
+  if (estimate.employerId !== DEMO_EMPLOYER_ID) {
+    return c.json(
+      {
+        error: {
+          code: "forbidden",
+          message: "Access denied",
+        },
+      },
+      403
+    );
+  }
+
+  // Get plan info
+  const [plan] = await db
+    .select()
+    .from(eventPlan)
+    .where(eq(eventPlan.id, estimate.planId))
+    .limit(1);
+
+  if (!plan) {
+    return c.json(
+      {
+        error: {
+          code: "internal_error",
+          message: "Plan not found",
+        },
+      },
+      500
+    );
+  }
+
+  // Get blockers
+  const blockers = await db
+    .select()
+    .from(estimateBlocker)
+    .where(eq(estimateBlocker.estimateId, estimate.id));
+
+  return c.json({
+    id: estimate.id,
+    status: estimate.status,
+    plan: {
+      id: plan.id,
+      name: plan.name,
+    },
+    selections: estimate.selections as Record<string, unknown>,
+    pricing: estimate.pricing as {
+      base: number;
+      addons: number;
+      total: number;
+      currency: string;
+    },
+    blocking_reasons: blockers.map((b) => b.reason),
+  });
+}
+
+/**
+ * Create a new estimate.
+ */
+export async function createEstimate(c: Context) {
+  // Get first plan as default
+  const [defaultPlan] = await db.select().from(eventPlan).limit(1);
+  if (!defaultPlan) {
+    return c.json(
+      {
+        error: {
+          code: "internal_error",
+          message: "No plans available",
+        },
+      },
+      500
+    );
+  }
+
+  const defaultPricing = await computePricing(defaultPlan.id, { addons: [] });
+
+  const estimate = await db
+    .insert(eventEstimate)
+    .values({
+      id: `est_${Date.now()}`,
+      employerId: DEMO_EMPLOYER_ID,
+      planId: defaultPlan.id,
+      status: "draft",
+      selections: { addons: [] },
+      pricing: defaultPricing,
+    })
+    .returning()
+    .then((rows) => rows[0]);
+
+  if (!estimate) {
+    return c.json(
+      {
+        error: {
+          code: "internal_error",
+          message: "Failed to create estimate",
+        },
+      },
+      500
+    );
+  }
+
+  // Get plan info
+  const [plan] = await db
+    .select()
+    .from(eventPlan)
+    .where(eq(eventPlan.id, estimate.planId))
+    .limit(1);
+
+  if (!plan) {
+    return c.json(
+      {
+        error: {
+          code: "internal_error",
+          message: "Plan not found",
+        },
+      },
+      500
+    );
+  }
+
+  // Get blockers (should be empty for new estimate)
+  const blockers = await db
+    .select()
+    .from(estimateBlocker)
+    .where(eq(estimateBlocker.estimateId, estimate.id));
+
+  return c.json({
+    id: estimate.id,
+    status: estimate.status,
+    plan: {
+      id: plan.id,
+      name: plan.name,
+    },
+    selections: estimate.selections as Record<string, unknown>,
+    pricing: estimate.pricing as {
+      base: number;
+      addons: number;
+      total: number;
+      currency: string;
+    },
+    blocking_reasons: blockers.map((b) => b.reason),
+  });
+}
+
+export const deleteEstimateRoute = createRoute({
+  method: "delete",
+  path: "/estimates/{id}",
+  tags: ["Estimates"],
+  summary: "Delete estimate by ID",
+  description: "Deletes a specific estimate by its ID",
+  request: {
+    params: z.object({
+      id: z.string().openapi({ example: "est_123" }),
+    }),
+  },
+  responses: {
+    204: {
+      description: "Estimate deleted successfully",
+    },
+    404: {
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+      description: "Estimate not found",
+    },
+    403: {
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+      description: "Access denied",
+    },
+    500: {
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+      description: "Internal error",
+    },
+  },
+});
+
+/**
+ * Delete estimate by ID.
+ */
+export async function deleteEstimate(c: Context) {
+  const { id } = c.req.valid("param" as never) as { id: string };
+
+  // First check if estimate exists
+  const estimate = await db
+    .select()
+    .from(eventEstimate)
+    .where(eq(eventEstimate.id, id))
+    .limit(1)
+    .then((rows) => rows[0]);
+
+  if (!estimate) {
+    return c.json(
+      {
+        error: {
+          code: "not_found",
+          message: `Estimate with ID "${id}" not found`,
+        },
+      },
+      404
+    );
+  }
+
+  // Check if estimate belongs to demo employer
+  if (estimate.employerId !== DEMO_EMPLOYER_ID) {
+    return c.json(
+      {
+        error: {
+          code: "forbidden",
+          message: "Access denied",
+        },
+      },
+      403
+    );
+  }
+
+  // Delete blockers first (foreign key constraint)
+  await db.delete(estimateBlocker).where(eq(estimateBlocker.estimateId, id));
+
+  // Delete estimate
+  await db.delete(eventEstimate).where(eq(eventEstimate.id, id));
+
+  return c.body(null, 204);
 }

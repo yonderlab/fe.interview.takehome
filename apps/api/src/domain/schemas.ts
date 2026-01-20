@@ -156,6 +156,16 @@ export const ErrorSchema = z
   })
   .openapi("Error");
 
+export const EstimatesResponseSchema = z
+  .object({
+    items: z.array(EstimateSchema),
+  })
+  .openapi("EstimatesResponse");
+
+export const CreateEstimateResponseSchema = EstimateSchema.openapi(
+  "CreateEstimateResponse"
+);
+
 export type EstimateStatus = z.infer<typeof estimateStatusSchema>;
 export type ApprovalType = z.infer<typeof approvalTypeSchema>;
 export type UpdateEstimateInput = z.infer<typeof updateEstimateSchema>;
