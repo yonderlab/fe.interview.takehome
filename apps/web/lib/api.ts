@@ -12,7 +12,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3002";
 
 async function fetchApi<T>(
   endpoint: string,
-  options?: RequestInit
+  options?: RequestInit,
 ): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
@@ -41,7 +41,7 @@ export async function getProviders(): Promise<ProvidersResponse> {
 
 export async function getPlans(providerId: string): Promise<PlansResponse> {
   return fetchApi<PlansResponse>(
-    `/plans?provider_id=${encodeURIComponent(providerId)}`
+    `/plans?provider_id=${encodeURIComponent(providerId)}`,
   );
 }
 
@@ -50,7 +50,7 @@ export async function getEstimate(): Promise<Estimate> {
 }
 
 export async function updateEstimate(
-  data: UpdateEstimateRequest
+  data: UpdateEstimateRequest,
 ): Promise<Estimate> {
   return fetchApi<Estimate>("/estimate", {
     method: "PUT",

@@ -29,7 +29,9 @@ describe("EstimateCard", () => {
   });
 
   it("renders the plan name", () => {
-    const estimate = createEstimate({ plan: { id: "plan_1", name: "Premium Plan" } });
+    const estimate = createEstimate({
+      plan: { id: "plan_1", name: "Premium Plan" },
+    });
     render(<EstimateCard estimate={estimate} onClick={mockOnClick} />);
 
     expect(screen.getByText("Premium Plan")).toBeInTheDocument();
@@ -50,7 +52,9 @@ describe("EstimateCard", () => {
   });
 
   it("renders the base price", () => {
-    const estimate = createEstimate({ pricing: { base: 50000, addons: 0, total: 50000, currency: "EUR" } });
+    const estimate = createEstimate({
+      pricing: { base: 50000, addons: 0, total: 50000, currency: "EUR" },
+    });
     render(<EstimateCard estimate={estimate} onClick={mockOnClick} />);
 
     expect(screen.getByText("Base Price")).toBeInTheDocument();
@@ -59,7 +63,9 @@ describe("EstimateCard", () => {
   });
 
   it("renders the total price", () => {
-    const estimate = createEstimate({ pricing: { base: 10000, addons: 0, total: 10000, currency: "EUR" } });
+    const estimate = createEstimate({
+      pricing: { base: 10000, addons: 0, total: 10000, currency: "EUR" },
+    });
     render(<EstimateCard estimate={estimate} onClick={mockOnClick} />);
 
     expect(screen.getByText("Total")).toBeInTheDocument();
@@ -123,17 +129,33 @@ describe("EstimateCard", () => {
   describe("when delete handler is provided", () => {
     it("renders the delete button", () => {
       const estimate = createEstimate();
-      render(<EstimateCard estimate={estimate} onClick={mockOnClick} onDelete={mockOnDelete} />);
+      render(
+        <EstimateCard
+          estimate={estimate}
+          onClick={mockOnClick}
+          onDelete={mockOnDelete}
+        />,
+      );
 
-      const deleteButton = screen.getByRole("button", { name: /delete estimate/i });
+      const deleteButton = screen.getByRole("button", {
+        name: /delete estimate/i,
+      });
       expect(deleteButton).toBeInTheDocument();
     });
 
     it("calls onDelete with estimate ID when delete button is clicked", () => {
       const estimate = createEstimate({ id: "est_789" });
-      render(<EstimateCard estimate={estimate} onClick={mockOnClick} onDelete={mockOnDelete} />);
+      render(
+        <EstimateCard
+          estimate={estimate}
+          onClick={mockOnClick}
+          onDelete={mockOnDelete}
+        />,
+      );
 
-      const deleteButton = screen.getByRole("button", { name: /delete estimate/i });
+      const deleteButton = screen.getByRole("button", {
+        name: /delete estimate/i,
+      });
       fireEvent.click(deleteButton);
 
       expect(mockOnDelete).toHaveBeenCalledWith("est_789");
@@ -142,9 +164,17 @@ describe("EstimateCard", () => {
 
     it("does NOT call onClick when delete button is clicked", () => {
       const estimate = createEstimate();
-      render(<EstimateCard estimate={estimate} onClick={mockOnClick} onDelete={mockOnDelete} />);
+      render(
+        <EstimateCard
+          estimate={estimate}
+          onClick={mockOnClick}
+          onDelete={mockOnDelete}
+        />,
+      );
 
-      const deleteButton = screen.getByRole("button", { name: /delete estimate/i });
+      const deleteButton = screen.getByRole("button", {
+        name: /delete estimate/i,
+      });
       fireEvent.click(deleteButton);
 
       expect(mockOnClick).not.toHaveBeenCalled();
@@ -156,7 +186,9 @@ describe("EstimateCard", () => {
       const estimate = createEstimate();
       render(<EstimateCard estimate={estimate} onClick={mockOnClick} />);
 
-      expect(screen.queryByRole("button", { name: /delete estimate/i })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: /delete estimate/i }),
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -164,7 +196,9 @@ describe("EstimateCard", () => {
     const estimate = createEstimate();
     render(<EstimateCard estimate={estimate} onClick={mockOnClick} />);
 
-    const card = screen.getByText("Test Plan").closest("div[class*='cursor-pointer']");
+    const card = screen
+      .getByText("Test Plan")
+      .closest("div[class*='cursor-pointer']");
     if (card) {
       fireEvent.click(card);
     }
@@ -202,4 +236,3 @@ describe("EstimateCard", () => {
     });
   });
 });
-

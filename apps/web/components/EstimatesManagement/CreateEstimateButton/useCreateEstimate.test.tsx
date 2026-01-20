@@ -80,7 +80,9 @@ describe("useCreateEstimate", () => {
       });
       const invalidateQueriesSpy = jest.spyOn(queryClient, "invalidateQueries");
       const Wrapper = ({ children }: { children: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
       );
       const { result } = renderHook(() => useCreateEstimate({}), {
         wrapper: Wrapper,
@@ -100,9 +102,12 @@ describe("useCreateEstimate", () => {
       const mockOnSuccess = jest.fn();
       (api.createEstimate as jest.Mock).mockResolvedValue(mockEstimate);
       const wrapper = createWrapper();
-      const { result } = renderHook(() => useCreateEstimate({ onSuccess: mockOnSuccess }), {
-        wrapper,
-      });
+      const { result } = renderHook(
+        () => useCreateEstimate({ onSuccess: mockOnSuccess }),
+        {
+          wrapper,
+        },
+      );
 
       result.current.mutate();
 
@@ -141,4 +146,3 @@ describe("useCreateEstimate", () => {
     });
   });
 });
-

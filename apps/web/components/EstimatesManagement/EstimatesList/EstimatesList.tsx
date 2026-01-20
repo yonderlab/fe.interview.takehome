@@ -11,10 +11,7 @@ interface Props {
   onClick: (estimateId: string) => void;
 }
 
-export const EstimatesList: React.FC<Props> = ({ 
-  onCreateClick, 
-  onClick
-}) => {
+export const EstimatesList: React.FC<Props> = ({ onCreateClick, onClick }) => {
   const { estimates, isLoading, error } = useEstimates();
   const { mutate: deleteEstimate } = useDeleteEstimate();
 

@@ -44,7 +44,10 @@ describe("EstimatesManagement", () => {
 
   it("renders the page title", () => {
     render(
-      <EstimatesManagement onCreateClick={mockOnCreateClick} onClick={mockOnClick} />
+      <EstimatesManagement
+        onCreateClick={mockOnCreateClick}
+        onClick={mockOnClick}
+      />,
     );
 
     expect(screen.getByText("Event Estimates")).toBeInTheDocument();
@@ -52,17 +55,23 @@ describe("EstimatesManagement", () => {
 
   it("renders the page description", () => {
     render(
-      <EstimatesManagement onCreateClick={mockOnCreateClick} onClick={mockOnClick} />
+      <EstimatesManagement
+        onCreateClick={mockOnCreateClick}
+        onClick={mockOnClick}
+      />,
     );
 
     expect(
-      screen.getByText("Manage your event estimates and create new ones")
+      screen.getByText("Manage your event estimates and create new ones"),
     ).toBeInTheDocument();
   });
 
   it("renders the CreateEstimateButton component", () => {
     render(
-      <EstimatesManagement onCreateClick={mockOnCreateClick} onClick={mockOnClick} />
+      <EstimatesManagement
+        onCreateClick={mockOnCreateClick}
+        onClick={mockOnClick}
+      />,
     );
 
     expect(screen.getByTestId("create-estimate-button")).toBeInTheDocument();
@@ -70,7 +79,10 @@ describe("EstimatesManagement", () => {
 
   it("renders the EstimatesList component", () => {
     render(
-      <EstimatesManagement onCreateClick={mockOnCreateClick} onClick={mockOnClick} />
+      <EstimatesManagement
+        onCreateClick={mockOnCreateClick}
+        onClick={mockOnClick}
+      />,
     );
 
     expect(screen.getByTestId("estimates-list")).toBeInTheDocument();
@@ -78,7 +90,10 @@ describe("EstimatesManagement", () => {
 
   it("passes onCreateClick to CreateEstimateButton as onEstimateCreated", () => {
     render(
-      <EstimatesManagement onCreateClick={mockOnCreateClick} onClick={mockOnClick} />
+      <EstimatesManagement
+        onCreateClick={mockOnCreateClick}
+        onClick={mockOnClick}
+      />,
     );
 
     const createButton = screen.getByText("Create Estimate");
@@ -90,7 +105,10 @@ describe("EstimatesManagement", () => {
 
   it("passes onCreateClick to EstimatesList", () => {
     render(
-      <EstimatesManagement onCreateClick={mockOnCreateClick} onClick={mockOnClick} />
+      <EstimatesManagement
+        onCreateClick={mockOnCreateClick}
+        onClick={mockOnClick}
+      />,
     );
 
     const createFromListButton = screen.getByText("Create from List");
@@ -102,7 +120,10 @@ describe("EstimatesManagement", () => {
 
   it("passes onClick to EstimatesList", () => {
     render(
-      <EstimatesManagement onCreateClick={mockOnCreateClick} onClick={mockOnClick} />
+      <EstimatesManagement
+        onCreateClick={mockOnCreateClick}
+        onClick={mockOnClick}
+      />,
     );
 
     const clickEstimateButton = screen.getByText("Click Estimate");
@@ -112,4 +133,3 @@ describe("EstimatesManagement", () => {
     expect(mockOnClick).toHaveBeenCalledTimes(1);
   });
 });
-

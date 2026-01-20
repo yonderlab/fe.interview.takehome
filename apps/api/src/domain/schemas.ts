@@ -163,7 +163,7 @@ export const EstimatesResponseSchema = z
   .openapi("EstimatesResponse");
 
 export const CreateEstimateResponseSchema = EstimateSchema.openapi(
-  "CreateEstimateResponse"
+  "CreateEstimateResponse",
 );
 
 export type EstimateStatus = z.infer<typeof estimateStatusSchema>;

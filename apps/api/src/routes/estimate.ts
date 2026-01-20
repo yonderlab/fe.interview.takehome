@@ -155,7 +155,7 @@ export async function getEstimate(c: Context) {
             message: "No plans available",
           },
         },
-        500
+        500,
       );
     }
 
@@ -183,7 +183,7 @@ export async function getEstimate(c: Context) {
           message: "Failed to create estimate",
         },
       },
-      500
+      500,
     );
   }
 
@@ -202,7 +202,7 @@ export async function getEstimate(c: Context) {
           message: "Plan not found",
         },
       },
-      500
+      500,
     );
   }
 
@@ -254,7 +254,7 @@ export async function updateEstimate(c: Context) {
           typeof value === "string" || Array.isArray(value)
             ? value
             : String(value),
-        ])
+        ]),
     ),
   };
 
@@ -311,7 +311,7 @@ export async function updateEstimate(c: Context) {
           message: "Failed to update estimate",
         },
       },
-      500
+      500,
     );
   }
 
@@ -330,7 +330,7 @@ export async function updateEstimate(c: Context) {
           message: "Plan not found",
         },
       },
-      500
+      500,
     );
   }
 
@@ -378,7 +378,7 @@ export async function finaliseEstimate(c: Context) {
           message: "No estimate found",
         },
       },
-      404
+      404,
     );
   }
 
@@ -396,7 +396,7 @@ export async function finaliseEstimate(c: Context) {
           message: `Cannot finalise estimate: ${blockers.map((b) => b.reason).join("; ")}`,
         },
       },
-      400
+      400,
     );
   }
 
@@ -415,7 +415,7 @@ export async function finaliseEstimate(c: Context) {
           message: "Plan not found",
         },
       },
-      500
+      500,
     );
   }
 
@@ -444,7 +444,7 @@ export async function finaliseEstimate(c: Context) {
           message: "Failed to finalise estimate",
         },
       },
-      500
+      500,
     );
   }
 
@@ -589,11 +589,11 @@ export async function listEstimates(c: Context) {
         },
         blocking_reasons: blockers.map((b) => b.reason),
       };
-    })
+    }),
   );
 
   const validEstimates = estimatesWithDetails.filter(
-    (e): e is NonNullable<typeof e> => e !== null
+    (e): e is NonNullable<typeof e> => e !== null,
   );
 
   return c.json({
@@ -622,7 +622,7 @@ export async function getEstimateById(c: Context) {
           message: "Estimate not found",
         },
       },
-      404
+      404,
     );
   }
 
@@ -635,7 +635,7 @@ export async function getEstimateById(c: Context) {
           message: "Access denied",
         },
       },
-      403
+      403,
     );
   }
 
@@ -654,7 +654,7 @@ export async function getEstimateById(c: Context) {
           message: "Plan not found",
         },
       },
-      500
+      500,
     );
   }
 
@@ -696,7 +696,7 @@ export async function createEstimate(c: Context) {
           message: "No plans available",
         },
       },
-      500
+      500,
     );
   }
 
@@ -723,7 +723,7 @@ export async function createEstimate(c: Context) {
           message: "Failed to create estimate",
         },
       },
-      500
+      500,
     );
   }
 
@@ -742,7 +742,7 @@ export async function createEstimate(c: Context) {
           message: "Plan not found",
         },
       },
-      500
+      500,
     );
   }
 
@@ -834,7 +834,7 @@ export async function deleteEstimate(c: Context) {
           message: `Estimate with ID "${id}" not found`,
         },
       },
-      404
+      404,
     );
   }
 
@@ -847,7 +847,7 @@ export async function deleteEstimate(c: Context) {
           message: "Access denied",
         },
       },
-      403
+      403,
     );
   }
 

@@ -52,7 +52,7 @@ export const ConfigureEstimateWizard: React.FC<Props> = (props) => {
         try {
           const plansResponse = await getPlans(provider.id);
           const plan = plansResponse.items.find(
-            (p: Plan) => p.id === estimate.plan.id
+            (p: Plan) => p.id === estimate.plan.id,
           );
 
           if (plan) {

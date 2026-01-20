@@ -366,7 +366,7 @@ it("caches the response for 5 minutes fresh, 5 minutes stale while revalidating,
 
   expect(res.setHeader).toHaveBeenCalledWith(
     "Cache-Control",
-    "public, max-age=300, stale-while-revalidate=300, stale-if-error=300"
+    "public, max-age=300, stale-while-revalidate=300, stale-if-error=300",
   );
 });
 ```
@@ -493,7 +493,7 @@ expect(searchClient.getRelatedEvents).not.toHaveBeenCalled();
 // Headers
 expect(res.setHeader).toHaveBeenCalledWith(
   "Cache-Control",
-  "public, max-age=300, stale-while-revalidate=300, stale-if-error=300"
+  "public, max-age=300, stale-while-revalidate=300, stale-if-error=300",
 );
 
 // Metrics logging
@@ -502,7 +502,7 @@ expect(webappMetricsLogger.logApiSuccess).toHaveBeenCalledWith(
   expect.any(Object),
   expect.any(Number),
   "GET",
-  200
+  200,
 );
 ```
 

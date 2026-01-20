@@ -18,4 +18,3 @@ function getErrorMessage(error: unknown): string | null {
   if (!error) return null;
   return error instanceof Error ? error.message : "Failed to load estimates";
 }
-

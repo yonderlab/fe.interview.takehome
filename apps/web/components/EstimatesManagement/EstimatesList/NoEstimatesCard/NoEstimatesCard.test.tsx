@@ -24,13 +24,13 @@ describe("NoEstimatesCard", () => {
     return render(
       <QueryClientProvider client={queryClient}>
         {component}
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
   };
 
   it("renders the no estimates message", () => {
     renderWithQueryClient(
-      <NoEstimatesCard onCreateClick={mockOnCreateClick} />
+      <NoEstimatesCard onCreateClick={mockOnCreateClick} />,
     );
 
     expect(screen.getByText("No estimates found")).toBeInTheDocument();
@@ -38,11 +38,11 @@ describe("NoEstimatesCard", () => {
 
   it("renders the create estimate button", () => {
     renderWithQueryClient(
-      <NoEstimatesCard onCreateClick={mockOnCreateClick} />
+      <NoEstimatesCard onCreateClick={mockOnCreateClick} />,
     );
 
     expect(
-      screen.getByRole("button", { name: /create new estimate/i })
+      screen.getByRole("button", { name: /create new estimate/i }),
     ).toBeInTheDocument();
   });
 
@@ -62,7 +62,7 @@ describe("NoEstimatesCard", () => {
     };
     (api.createEstimate as jest.Mock).mockResolvedValue(mockEstimate);
     renderWithQueryClient(
-      <NoEstimatesCard onCreateClick={mockOnCreateClick} />
+      <NoEstimatesCard onCreateClick={mockOnCreateClick} />,
     );
     const createButton = screen.getByRole("button", {
       name: /create new estimate/i,
@@ -95,7 +95,7 @@ describe("NoEstimatesCard", () => {
     });
     (api.createEstimate as jest.Mock).mockReturnValue(promise);
     renderWithQueryClient(
-      <NoEstimatesCard onCreateClick={mockOnCreateClick} />
+      <NoEstimatesCard onCreateClick={mockOnCreateClick} />,
     );
     const createButton = screen.getByRole("button", {
       name: /create new estimate/i,
@@ -105,7 +105,7 @@ describe("NoEstimatesCard", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: /creating/i })
+        screen.getByRole("button", { name: /creating/i }),
       ).toBeInTheDocument();
     });
     if (resolvePromise) {

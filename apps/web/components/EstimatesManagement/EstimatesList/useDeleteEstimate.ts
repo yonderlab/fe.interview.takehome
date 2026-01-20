@@ -24,7 +24,7 @@ export function useDeleteEstimate({ onSuccess }: Options = {}) {
       if (previousEstimates) {
         queryClient.setQueryData<EstimatesResponse>(["estimates"], {
           items: previousEstimates.items.filter(
-            (estimate) => estimate.id !== estimateId
+            (estimate) => estimate.id !== estimateId,
           ),
         });
       }
@@ -43,4 +43,3 @@ export function useDeleteEstimate({ onSuccess }: Options = {}) {
     },
   });
 }
-

@@ -9,7 +9,9 @@ jest.mock("@/lib/api", () => ({
   listEstimates: jest.fn(),
 }));
 
-const createMockEstimatesResponse = (items: EstimatesResponse["items"] = []): EstimatesResponse => ({
+const createMockEstimatesResponse = (
+  items: EstimatesResponse["items"] = [],
+): EstimatesResponse => ({
   items,
 });
 
@@ -33,7 +35,7 @@ describe("useEstimates", () => {
 
   it("returns empty array when data is not loaded", () => {
     (api.listEstimates as jest.Mock).mockImplementation(
-      () => new Promise(() => {})
+      () => new Promise(() => {}),
     );
     const wrapper = createWrapper();
     const { result } = renderHook(() => useEstimates(), { wrapper });
@@ -131,4 +133,3 @@ describe("useEstimates", () => {
     });
   });
 });
-

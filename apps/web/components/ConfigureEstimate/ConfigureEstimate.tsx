@@ -20,7 +20,7 @@ export const ConfigureEstimate: React.FC<Props> = ({
   const { estimate, isLoading, error } = useEstimate(estimateId);
 
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
-    null
+    null,
   );
   const [currentPlan, setCurrentPlan] = useState<Plan | null>(null);
 

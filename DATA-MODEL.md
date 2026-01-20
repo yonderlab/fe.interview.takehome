@@ -23,18 +23,20 @@ Represents a provider or venue that offers corporate events.
 
 **Table:** `event_provider`
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | text (PK) | Unique identifier of the provider |
-| `name` | text | Provider name (e.g., "Venue A") |
-| `location` | text | Provider location (e.g., "Berlin") |
-| `logo_url` | text (nullable) | URL of the provider's logo |
-| `created_at` | timestamp | Record creation date |
+| Field        | Type            | Description                        |
+| ------------ | --------------- | ---------------------------------- |
+| `id`         | text (PK)       | Unique identifier of the provider  |
+| `name`       | text            | Provider name (e.g., "Venue A")    |
+| `location`   | text            | Provider location (e.g., "Berlin") |
+| `logo_url`   | text (nullable) | URL of the provider's logo         |
+| `created_at` | timestamp       | Record creation date               |
 
 **Relationships:**
+
 - **1:N** with `event_plan` - A provider can have multiple plans
 
 **Example:**
+
 ```json
 {
   "id": "prov_a",
@@ -53,26 +55,28 @@ Represents a package offered by a provider with base price and specific configur
 
 **Table:** `event_plan`
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | text (PK) | Unique identifier of the plan |
-| `provider_id` | text (FK) | Reference to the provider |
-| `name` | text | Plan name (e.g., "Venue A - Premium") |
-| `description` | text | Detailed description of the plan |
-| `base_price_cents` | integer | Base price in cents |
-| `currency` | text | Currency (e.g., "EUR", "USD") |
-| `approval_type` | text | Approval type: `"none"` or `"manager_review"` |
-| `min_participants` | integer | Minimum number of participants required |
-| `lead_time_days` | integer | Days in advance required to book |
-| `created_at` | timestamp | Record creation date |
+| Field              | Type      | Description                                   |
+| ------------------ | --------- | --------------------------------------------- |
+| `id`               | text (PK) | Unique identifier of the plan                 |
+| `provider_id`      | text (FK) | Reference to the provider                     |
+| `name`             | text      | Plan name (e.g., "Venue A - Premium")         |
+| `description`      | text      | Detailed description of the plan              |
+| `base_price_cents` | integer   | Base price in cents                           |
+| `currency`         | text      | Currency (e.g., "EUR", "USD")                 |
+| `approval_type`    | text      | Approval type: `"none"` or `"manager_review"` |
+| `min_participants` | integer   | Minimum number of participants required       |
+| `lead_time_days`   | integer   | Days in advance required to book              |
+| `created_at`       | timestamp | Record creation date                          |
 
 **Relationships:**
+
 - **N:1** with `event_provider` - Belongs to a provider
 - **1:N** with `plan_addon` - Can have multiple addons
 - **1:N** with `plan_option_group` - Can have multiple option groups
 - **1:N** with `event_estimate` - Can have multiple estimates
 
 **Example:**
+
 ```json
 {
   "id": "plan_a_premium",
@@ -96,23 +100,26 @@ Represents optional additional services that can be added to a plan.
 
 **Table:** `plan_addon`
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | text (PK) | Unique identifier of the addon |
-| `plan_id` | text (FK) | Reference to the plan |
-| `name` | text | Addon name (e.g., "Extra AV") |
-| `price_cents` | integer | Addon price in cents |
-| `currency` | text | Addon currency |
+| Field         | Type      | Description                    |
+| ------------- | --------- | ------------------------------ |
+| `id`          | text (PK) | Unique identifier of the addon |
+| `plan_id`     | text (FK) | Reference to the plan          |
+| `name`        | text      | Addon name (e.g., "Extra AV")  |
+| `price_cents` | integer   | Addon price in cents           |
+| `currency`    | text      | Addon currency                 |
 
 **Relationships:**
+
 - **N:1** with `event_plan` - Belongs to a plan
 
 **Addon examples:**
+
 - `addon_av` - Extra AV Equipment
 - `addon_photo` - Photography Service
 - `addon_host` - VIP Host Service
 
 **Example:**
+
 ```json
 {
   "id": "addon_av",
@@ -131,24 +138,27 @@ Represents a group of configurable options for a plan (e.g., seating type, food 
 
 **Table:** `plan_option_group`
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | text (PK) | Unique identifier of the group |
-| `plan_id` | text (FK) | Reference to the plan |
-| `code` | text | Group identifier code (e.g., `"seating_type"`) |
-| `description` | text (nullable) | Description of the option group |
-| `required` | boolean | Indicates if selecting a value is mandatory |
+| Field         | Type            | Description                                    |
+| ------------- | --------------- | ---------------------------------------------- |
+| `id`          | text (PK)       | Unique identifier of the group                 |
+| `plan_id`     | text (FK)       | Reference to the plan                          |
+| `code`        | text            | Group identifier code (e.g., `"seating_type"`) |
+| `description` | text (nullable) | Description of the option group                |
+| `required`    | boolean         | Indicates if selecting a value is mandatory    |
 
 **Relationships:**
+
 - **N:1** with `event_plan` - Belongs to a plan
 - **1:N** with `plan_option_value` - Has multiple possible values
 
 **Code examples:**
+
 - `seating_type` - Seating type
 - `food_package` - Food package
 - `date_flex_window_days` - Date flexibility window
 
 **Example:**
+
 ```json
 {
   "id": "opt_group_seating",
@@ -167,18 +177,20 @@ Represents the possible values within an option group.
 
 **Table:** `plan_option_value`
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | text (PK) | Unique identifier of the value |
-| `option_group_id` | text (FK) | Reference to the option group |
-| `value` | text | Specific value (e.g., `"open"`, `"reserved"`) |
-| `price_cents` | integer (nullable) | Optional price delta in cents |
-| `currency` | text (nullable) | Currency of the price delta |
+| Field             | Type               | Description                                   |
+| ----------------- | ------------------ | --------------------------------------------- |
+| `id`              | text (PK)          | Unique identifier of the value                |
+| `option_group_id` | text (FK)          | Reference to the option group                 |
+| `value`           | text               | Specific value (e.g., `"open"`, `"reserved"`) |
+| `price_cents`     | integer (nullable) | Optional price delta in cents                 |
+| `currency`        | text (nullable)    | Currency of the price delta                   |
 
 **Relationships:**
+
 - **N:1** with `plan_option_group` - Belongs to an option group
 
 **Example:**
+
 ```json
 {
   "id": "opt_val_open",
@@ -190,6 +202,7 @@ Represents the possible values within an option group.
 ```
 
 **Example with price delta:**
+
 ```json
 {
   "id": "opt_val_reserved",
@@ -208,23 +221,25 @@ Represents the configuration of an event in progress, with status and user selec
 
 **Table:** `event_estimate`
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | text (PK) | Unique identifier of the estimate |
-| `employer_id` | text | ID of the employer/client creating the estimate |
-| `plan_id` | text (FK) | Reference to the selected plan |
-| `status` | text | Current status of the estimate (see [States](#states-and-enums)) |
-| `selections` | JSON | User selections (chosen options and addons) |
-| `pricing` | JSON | Price calculation (base, addons, total) |
-| `submitted_at` | timestamp (nullable) | Date when the estimate was submitted |
-| `finalised_at` | timestamp (nullable) | Date when the estimate was finalised |
-| `updated_at` | timestamp | Last update date |
+| Field          | Type                 | Description                                                      |
+| -------------- | -------------------- | ---------------------------------------------------------------- |
+| `id`           | text (PK)            | Unique identifier of the estimate                                |
+| `employer_id`  | text                 | ID of the employer/client creating the estimate                  |
+| `plan_id`      | text (FK)            | Reference to the selected plan                                   |
+| `status`       | text                 | Current status of the estimate (see [States](#states-and-enums)) |
+| `selections`   | JSON                 | User selections (chosen options and addons)                      |
+| `pricing`      | JSON                 | Price calculation (base, addons, total)                          |
+| `submitted_at` | timestamp (nullable) | Date when the estimate was submitted                             |
+| `finalised_at` | timestamp (nullable) | Date when the estimate was finalised                             |
+| `updated_at`   | timestamp            | Last update date                                                 |
 
 **Relationships:**
+
 - **N:1** with `event_plan` - Belongs to a plan
 - **1:N** with `estimate_blocker` - Can have multiple blockers
 
 **`selections` structure (JSON):**
+
 ```json
 {
   "addons": ["addon_av", "addon_photo"],
@@ -235,6 +250,7 @@ Represents the configuration of an event in progress, with status and user selec
 ```
 
 **`pricing` structure (JSON):**
+
 ```json
 {
   "base": 70000,
@@ -245,6 +261,7 @@ Represents the configuration of an event in progress, with status and user selec
 ```
 
 **Complete example:**
+
 ```json
 {
   "id": "est_demo",
@@ -276,21 +293,24 @@ Represents reasons why an estimate cannot be finalised.
 
 **Table:** `estimate_blocker`
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | text (PK) | Unique identifier of the blocker |
+| Field         | Type      | Description                       |
+| ------------- | --------- | --------------------------------- |
+| `id`          | text (PK) | Unique identifier of the blocker  |
 | `estimate_id` | text (FK) | Reference to the blocked estimate |
-| `reason` | text | Blocking reason |
+| `reason`      | text      | Blocking reason                   |
 
 **Relationships:**
+
 - **N:1** with `event_estimate` - Belongs to an estimate
 
 **Reason examples:**
+
 - `"Missing required field: seating_type"`
 - `"Minimum participants not met"`
 - `"Invalid option value for food_package"`
 
 **Example:**
+
 ```json
 {
   "id": "blocker_001",
@@ -319,20 +339,20 @@ event_provider (1) ──< (N) event_plan (1) ──< (N) plan_addon
 
 ### Relationship Summary
 
-| Entity | Relationship | Related Entity | Cardinality |
-|--------|--------------|----------------|-------------|
-| `event_provider` | has | `event_plan` | 1:N |
-| `event_plan` | belongs to | `event_provider` | N:1 |
-| `event_plan` | has | `plan_addon` | 1:N |
-| `plan_addon` | belongs to | `event_plan` | N:1 |
-| `event_plan` | has | `plan_option_group` | 1:N |
-| `plan_option_group` | belongs to | `event_plan` | N:1 |
-| `plan_option_group` | has | `plan_option_value` | 1:N |
-| `plan_option_value` | belongs to | `plan_option_group` | N:1 |
-| `event_plan` | has | `event_estimate` | 1:N |
-| `event_estimate` | belongs to | `event_plan` | N:1 |
-| `event_estimate` | has | `estimate_blocker` | 1:N |
-| `estimate_blocker` | belongs to | `event_estimate` | N:1 |
+| Entity              | Relationship | Related Entity      | Cardinality |
+| ------------------- | ------------ | ------------------- | ----------- |
+| `event_provider`    | has          | `event_plan`        | 1:N         |
+| `event_plan`        | belongs to   | `event_provider`    | N:1         |
+| `event_plan`        | has          | `plan_addon`        | 1:N         |
+| `plan_addon`        | belongs to   | `event_plan`        | N:1         |
+| `event_plan`        | has          | `plan_option_group` | 1:N         |
+| `plan_option_group` | belongs to   | `event_plan`        | N:1         |
+| `plan_option_group` | has          | `plan_option_value` | 1:N         |
+| `plan_option_value` | belongs to   | `plan_option_group` | N:1         |
+| `event_plan`        | has          | `event_estimate`    | 1:N         |
+| `event_estimate`    | belongs to   | `event_plan`        | N:1         |
+| `event_estimate`    | has          | `estimate_blocker`  | 1:N         |
+| `estimate_blocker`  | belongs to   | `event_estimate`    | N:1         |
 
 ---
 
@@ -342,24 +362,24 @@ event_provider (1) ──< (N) event_plan (1) ──< (N) plan_addon
 
 The `status` field in `event_estimate` can have the following values:
 
-| State | Description |
-|-------|-------------|
-| `draft` | The estimate is in draft, can be modified |
-| `submitted` | The estimate has been submitted for processing |
-| `quote_available` | A quote is available for review |
-| `pending_approval` | The estimate is awaiting manager approval |
-| `finalised` | The estimate has been finalised and approved |
-| `rejected` | The estimate has been rejected |
-| `expired` | The estimate has expired |
+| State              | Description                                    |
+| ------------------ | ---------------------------------------------- |
+| `draft`            | The estimate is in draft, can be modified      |
+| `submitted`        | The estimate has been submitted for processing |
+| `quote_available`  | A quote is available for review                |
+| `pending_approval` | The estimate is awaiting manager approval      |
+| `finalised`        | The estimate has been finalised and approved   |
+| `rejected`         | The estimate has been rejected                 |
+| `expired`          | The estimate has expired                       |
 
 ### Approval Type
 
 The `approval_type` field in `event_plan` can have the following values:
 
-| Type | Description |
-|------|-------------|
-| `none` | No approval required, can be finalised directly |
-| `manager_review` | Requires manager approval before finalising |
+| Type             | Description                                     |
+| ---------------- | ----------------------------------------------- |
+| `none`           | No approval required, can be finalised directly |
+| `manager_review` | Requires manager approval before finalising     |
 
 ---
 
@@ -606,9 +626,7 @@ The `approval_type` field in `event_plan` can have the following values:
     "total": 60000,
     "currency": "EUR"
   },
-  "blocking_reasons": [
-    "Missing required field: seating_type"
-  ]
+  "blocking_reasons": ["Missing required field: seating_type"]
 }
 ```
 
@@ -616,13 +634,13 @@ The `approval_type` field in `event_plan` can have the following values:
 
 ## 🔍 Example Data Matrix (Seed Data)
 
-| Provider | Plan | Options | Addons | Approval | Notes |
-|----------|------|---------|--------|----------|-------|
-| Venue A | Standard | none | none | none | Simplest flow |
-| Venue A | Premium | seating_type, food_package | AV, photography | manager_review | Approvals + addons |
-| Venue B | Essentials | seating_type | none | none | Required option |
-| Venue B | Flex | seating_type, date_flex_window_days | host | none | Date flexibility |
-| Venue C | Corporate | food_package | AV, VIP host | manager_review | Rich configuration |
+| Provider | Plan       | Options                             | Addons          | Approval       | Notes              |
+| -------- | ---------- | ----------------------------------- | --------------- | -------------- | ------------------ |
+| Venue A  | Standard   | none                                | none            | none           | Simplest flow      |
+| Venue A  | Premium    | seating_type, food_package          | AV, photography | manager_review | Approvals + addons |
+| Venue B  | Essentials | seating_type                        | none            | none           | Required option    |
+| Venue B  | Flex       | seating_type, date_flex_window_days | host            | none           | Date flexibility   |
+| Venue C  | Corporate  | food_package                        | AV, VIP host    | manager_review | Rich configuration |
 
 ### Common Option Groups
 
@@ -647,4 +665,3 @@ The `approval_type` field in `event_plan` can have the following values:
 ---
 
 **Last updated:** January 2024
-

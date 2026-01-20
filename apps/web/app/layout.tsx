@@ -14,7 +14,7 @@ export default function RootLayout({
         defaultOptions: {
           queries: { staleTime: ONE_MINUTE, refetchOnWindowFocus: false },
         },
-      })
+      }),
   );
 
   return (

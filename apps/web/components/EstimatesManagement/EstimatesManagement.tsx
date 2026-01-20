@@ -26,10 +26,7 @@ export const EstimatesManagement: React.FC<EstimatesManagementProps> = ({
         <CreateEstimateButton onEstimateCreated={onCreateClick} />
       </div>
 
-      <EstimatesList 
-        onCreateClick={onCreateClick}
-        onClick={onClick}
-      />
+      <EstimatesList onCreateClick={onCreateClick} onClick={onClick} />
     </>
   );
 };

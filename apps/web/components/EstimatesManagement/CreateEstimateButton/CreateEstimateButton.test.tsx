@@ -46,7 +46,7 @@ describe("CreateEstimateButton", () => {
     render(<CreateEstimateButton onEstimateCreated={mockOnEstimateCreated} />);
 
     expect(
-      screen.getByRole("button", { name: /create new estimate/i })
+      screen.getByRole("button", { name: /create new estimate/i }),
     ).toBeInTheDocument();
   });
 
@@ -69,20 +69,20 @@ describe("CreateEstimateButton", () => {
 
     it("shows creating text", () => {
       render(
-        <CreateEstimateButton onEstimateCreated={mockOnEstimateCreated} />
+        <CreateEstimateButton onEstimateCreated={mockOnEstimateCreated} />,
       );
 
       expect(
-        screen.getByRole("button", { name: /creating/i })
+        screen.getByRole("button", { name: /creating/i }),
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole("button", { name: /create new estimate/i })
+        screen.queryByRole("button", { name: /create new estimate/i }),
       ).not.toBeInTheDocument();
     });
 
     it("disables the button", () => {
       render(
-        <CreateEstimateButton onEstimateCreated={mockOnEstimateCreated} />
+        <CreateEstimateButton onEstimateCreated={mockOnEstimateCreated} />,
       );
 
       const button = screen.getByRole("button", { name: /creating/i });
@@ -106,7 +106,7 @@ describe("CreateEstimateButton", () => {
         };
       });
       render(
-        <CreateEstimateButton onEstimateCreated={mockOnEstimateCreated} />
+        <CreateEstimateButton onEstimateCreated={mockOnEstimateCreated} />,
       );
       const button = screen.getByRole("button", {
         name: /create new estimate/i,
@@ -122,20 +122,20 @@ describe("CreateEstimateButton", () => {
   describe("when the button is not pending", () => {
     it("shows create new estimate text", () => {
       render(
-        <CreateEstimateButton onEstimateCreated={mockOnEstimateCreated} />
+        <CreateEstimateButton onEstimateCreated={mockOnEstimateCreated} />,
       );
 
       expect(
-        screen.getByRole("button", { name: /create new estimate/i })
+        screen.getByRole("button", { name: /create new estimate/i }),
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole("button", { name: /creating/i })
+        screen.queryByRole("button", { name: /creating/i }),
       ).not.toBeInTheDocument();
     });
 
     it("enables the button", () => {
       render(
-        <CreateEstimateButton onEstimateCreated={mockOnEstimateCreated} />
+        <CreateEstimateButton onEstimateCreated={mockOnEstimateCreated} />,
       );
 
       const button = screen.getByRole("button", {

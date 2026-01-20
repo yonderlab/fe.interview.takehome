@@ -24,7 +24,7 @@ const createMockEstimate = (id: string) => ({
 });
 
 const createMockEstimatesResponse = (
-  items: EstimatesResponse["items"]
+  items: EstimatesResponse["items"],
 ): EstimatesResponse => ({
   items,
 });
@@ -90,9 +90,12 @@ describe("useDeleteEstimate", () => {
       const mockOnSuccess = jest.fn();
       (api.deleteEstimate as jest.Mock).mockResolvedValue(undefined);
       const wrapper = createWrapper(queryClient);
-      const { result } = renderHook(() => useDeleteEstimate({ onSuccess: mockOnSuccess }), {
-        wrapper,
-      });
+      const { result } = renderHook(
+        () => useDeleteEstimate({ onSuccess: mockOnSuccess }),
+        {
+          wrapper,
+        },
+      );
 
       result.current.mutate("est_123");
 
@@ -133,7 +136,9 @@ describe("useDeleteEstimate", () => {
       result.current.mutate("est_2");
 
       await waitFor(() => {
-        const cachedData = queryClient.getQueryData<EstimatesResponse>(["estimates"]);
+        const cachedData = queryClient.getQueryData<EstimatesResponse>([
+          "estimates",
+        ]);
         expect(cachedData?.items).toHaveLength(2);
         expect(cachedData?.items.find((e) => e.id === "est_2")).toBeUndefined();
         expect(cachedData?.items.find((e) => e.id === "est_1")).toBeDefined();
@@ -160,7 +165,9 @@ describe("useDeleteEstimate", () => {
       result.current.mutate("est_2");
 
       await waitFor(() => {
-        const cachedData = queryClient.getQueryData<EstimatesResponse>(["estimates"]);
+        const cachedData = queryClient.getQueryData<EstimatesResponse>([
+          "estimates",
+        ]);
         expect(cachedData?.items).toEqual(estimates.items);
         expect(cachedData?.items.length).toBe(2);
         expect(cachedData?.items.find((e) => e.id === "est_2")).toBeDefined();
@@ -178,7 +185,9 @@ describe("useDeleteEstimate", () => {
         expect(api.deleteEstimate).toHaveBeenCalled();
       });
 
-      const cachedData = queryClient.getQueryData<EstimatesResponse>(["estimates"]);
+      const cachedData = queryClient.getQueryData<EstimatesResponse>([
+        "estimates",
+      ]);
       expect(cachedData).toBeUndefined();
     });
   });
@@ -198,4 +207,3 @@ describe("useDeleteEstimate", () => {
     });
   });
 });
-

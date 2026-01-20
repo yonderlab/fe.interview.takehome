@@ -7,4 +7,3 @@ export const statusColors: Record<string, string> = {
   rejected: "bg-red-100 text-red-800",
   expired: "bg-gray-100 text-gray-800",
 };
-

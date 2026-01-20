@@ -14,13 +14,21 @@ jest.mock("./useDeleteEstimate", () => ({
 }));
 
 jest.mock("./EstimatesLoading", () => ({
-  EstimatesLoading: () => <div data-testid="estimates-loading">Loading estimates...</div>,
+  EstimatesLoading: () => (
+    <div data-testid="estimates-loading">Loading estimates...</div>
+  ),
 }));
 
 jest.mock("./NoEstimatesCard/NoEstimatesCard", () => ({
-  NoEstimatesCard: ({ onCreateClick }: { onCreateClick: (id: string) => void }) => (
+  NoEstimatesCard: ({
+    onCreateClick,
+  }: {
+    onCreateClick: (id: string) => void;
+  }) => (
     <div data-testid="no-estimates-card">
-      <button onClick={() => onCreateClick("new-estimate-id")}>Create Estimate</button>
+      <button onClick={() => onCreateClick("new-estimate-id")}>
+        Create Estimate
+      </button>
     </div>
   ),
 }));
@@ -91,25 +99,45 @@ describe("EstimatesList", () => {
     });
 
     it("renders the loading component", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       expect(screen.getByTestId("estimates-loading")).toBeInTheDocument();
     });
 
     it("does NOT render the error message", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       expect(screen.queryByText(/failed to load/i)).not.toBeInTheDocument();
     });
 
     it("does NOT render the no estimates card", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       expect(screen.queryByTestId("no-estimates-card")).not.toBeInTheDocument();
     });
 
     it("does NOT render estimate cards", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       expect(screen.queryByTestId(/estimate-card-/)).not.toBeInTheDocument();
     });
@@ -125,13 +153,23 @@ describe("EstimatesList", () => {
     });
 
     it("renders the error message", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       expect(screen.getByText("Failed to load estimates")).toBeInTheDocument();
     });
 
     it("renders the no estimates card when there are no estimates", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       expect(screen.getByTestId("no-estimates-card")).toBeInTheDocument();
     });
@@ -147,13 +185,23 @@ describe("EstimatesList", () => {
     });
 
     it("renders the no estimates card", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       expect(screen.getByTestId("no-estimates-card")).toBeInTheDocument();
     });
 
     it("calls onCreateClick when create estimate button is clicked", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       const createButton = screen.getByText("Create Estimate");
       fireEvent.click(createButton);
@@ -163,13 +211,23 @@ describe("EstimatesList", () => {
     });
 
     it("does NOT render estimate cards", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       expect(screen.queryByTestId(/estimate-card-/)).not.toBeInTheDocument();
     });
 
     it("does NOT render the error message", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       expect(screen.queryByText(/failed to load/i)).not.toBeInTheDocument();
     });
@@ -177,8 +235,14 @@ describe("EstimatesList", () => {
 
   describe("when there are estimates", () => {
     const mockEstimates = [
-      createMockEstimate({ id: "est_1", plan: { id: "plan_1", name: "Plan 1" } }),
-      createMockEstimate({ id: "est_2", plan: { id: "plan_2", name: "Plan 2" } }),
+      createMockEstimate({
+        id: "est_1",
+        plan: { id: "plan_1", name: "Plan 1" },
+      }),
+      createMockEstimate({
+        id: "est_2",
+        plan: { id: "plan_2", name: "Plan 2" },
+      }),
     ];
 
     beforeEach(() => {
@@ -190,20 +254,35 @@ describe("EstimatesList", () => {
     });
 
     it("renders all estimate cards", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       expect(screen.getByTestId("estimate-card-est_1")).toBeInTheDocument();
       expect(screen.getByTestId("estimate-card-est_2")).toBeInTheDocument();
     });
 
     it("does NOT render the no estimates card", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       expect(screen.queryByTestId("no-estimates-card")).not.toBeInTheDocument();
     });
 
     it("calls onClick with estimate ID when estimate card is clicked", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       const cardButton = screen.getByTestId("card-click-est_1");
       fireEvent.click(cardButton);
@@ -213,7 +292,12 @@ describe("EstimatesList", () => {
     });
 
     it("calls deleteEstimate with estimate ID when delete button is clicked", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       const deleteButton = screen.getByTestId("card-delete-est_1");
       fireEvent.click(deleteButton);
@@ -223,7 +307,12 @@ describe("EstimatesList", () => {
     });
 
     it("does NOT render the error message", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       expect(screen.queryByText(/failed to load/i)).not.toBeInTheDocument();
     });
@@ -241,11 +330,15 @@ describe("EstimatesList", () => {
     });
 
     it("renders both the error message and estimate cards", () => {
-      render(<EstimatesList onCreateClick={mockOnCreateClick} onClick={mockOnClick} />);
+      render(
+        <EstimatesList
+          onCreateClick={mockOnCreateClick}
+          onClick={mockOnClick}
+        />,
+      );
 
       expect(screen.getByText("Network error")).toBeInTheDocument();
       expect(screen.getByTestId("estimate-card-est_1")).toBeInTheDocument();
     });
   });
 });
-
