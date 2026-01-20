@@ -37,6 +37,25 @@ export const ConfigureEstimateWizard: React.FC<Props> = (props) => {
   const { providers } = useProviders();
   const { plans: plansForProvider } = usePlans(selectedProviderId);
 
+  const isNewlyCreatedEstimate = (estimate: Estimate | null): boolean => {
+    if (!estimate) return false;
+
+    if (estimate.status !== "draft") return false;
+
+    const selections = estimate.selections || {};
+    const selectionKeys = Object.keys(selections);
+    const hasOnlyEmptyAddons =
+      selectionKeys.length === 1 &&
+      selectionKeys[0] === "addons" &&
+      Array.isArray(selections.addons) &&
+      selections.addons.length === 0;
+
+    const hasNoBlockers =
+      !estimate.blocking_reasons || estimate.blocking_reasons.length === 0;
+
+    return hasOnlyEmptyAddons && hasNoBlockers;
+  };
+
   // Initialize state from estimate when it loads
   useEffect(() => {
     if (
@@ -46,6 +65,12 @@ export const ConfigureEstimateWizard: React.FC<Props> = (props) => {
       providers.length === 0
     )
       return;
+
+    if (isNewlyCreatedEstimate(estimate)) {
+      setIsInitializing(false);
+      setActiveStep("provider");
+      return;
+    }
 
     const findProviderAndPlan = async () => {
       for (const provider of providers) {
@@ -92,6 +117,8 @@ export const ConfigureEstimateWizard: React.FC<Props> = (props) => {
       !isInitializing
     )
       return;
+
+    if (isNewlyCreatedEstimate(estimate)) return;
 
     const plan = plansForProvider.find((p) => p.id === estimate.plan.id);
     if (plan) {
