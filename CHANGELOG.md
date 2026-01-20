@@ -32,6 +32,7 @@ Cursor > Composer > Prompt "Generate a markdown explaining the domain entities, 
 - I have ignoted the possibility of multiple currencies on purpose for simplify, but this should be checked with the team and the PM in a real project (or if you don't have these roles based on user needs or expansion business strategy).
 - I didn't look for a perfect solution, I have tried to show my way of work and way of thinking about how to structure UIs in React + Typescript.
 - I have created tests only in the EstimatesManagement feature components to showcase my testing skills.
+- I have disable limting checks in the web project due to time constrain. I would NEVER do this in a real project.
 
 **Some design/architecture decisions:**
 
