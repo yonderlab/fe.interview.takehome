@@ -30,14 +30,22 @@ export const ConfigureEstimateWizard: React.FC<Props> = (props) => {
   >();
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
-  const [activeStep, setActiveStep] = useState<"provider" | "plan" | "configure">("provider");
+  const [activeStep, setActiveStep] = useState<
+    "provider" | "plan" | "configure"
+  >("provider");
 
   const { providers } = useProviders();
   const { plans: plansForProvider } = usePlans(selectedProviderId);
 
   // Initialize state from estimate when it loads
   useEffect(() => {
-    if (!estimate || !isInitializing || selectedProviderId || providers.length === 0) return;
+    if (
+      !estimate ||
+      !isInitializing ||
+      selectedProviderId ||
+      providers.length === 0
+    )
+      return;
 
     const findProviderAndPlan = async () => {
       for (const provider of providers) {
@@ -46,7 +54,7 @@ export const ConfigureEstimateWizard: React.FC<Props> = (props) => {
           const plan = plansResponse.items.find(
             (p: Plan) => p.id === estimate.plan.id
           );
-          
+
           if (plan) {
             setSelectedProviderId(provider.id);
             setSelectedPlan(plan);
@@ -65,11 +73,25 @@ export const ConfigureEstimateWizard: React.FC<Props> = (props) => {
     };
 
     findProviderAndPlan();
-  }, [estimate, providers, isInitializing, selectedProviderId, onProviderSelected, onPlanSelected]);
+  }, [
+    estimate,
+    providers,
+    isInitializing,
+    selectedProviderId,
+    onProviderSelected,
+    onPlanSelected,
+  ]);
 
   // Also check plansForProvider when they load (fallback for when provider is already selected)
   useEffect(() => {
-    if (!estimate || selectedPlan || !selectedProviderId || plansForProvider.length === 0 || !isInitializing) return;
+    if (
+      !estimate ||
+      selectedPlan ||
+      !selectedProviderId ||
+      plansForProvider.length === 0 ||
+      !isInitializing
+    )
+      return;
 
     const plan = plansForProvider.find((p) => p.id === estimate.plan.id);
     if (plan) {
@@ -78,7 +100,14 @@ export const ConfigureEstimateWizard: React.FC<Props> = (props) => {
       onPlanSelected?.(plan);
       setIsInitializing(false);
     }
-  }, [estimate, selectedProviderId, plansForProvider, selectedPlan, isInitializing, onPlanSelected]);
+  }, [
+    estimate,
+    selectedProviderId,
+    plansForProvider,
+    selectedPlan,
+    isInitializing,
+    onPlanSelected,
+  ]);
 
   return (
     <Wizard
