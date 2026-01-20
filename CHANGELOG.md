@@ -33,6 +33,7 @@ Cursor > Composer > Prompt "Generate a markdown explaining the domain entities, 
 - I didn't look for a perfect solution, I have tried to show my way of work and way of thinking about how to structure UIs in React + Typescript.
 - I have created tests only in the EstimatesManagement feature components to showcase my testing skills.
 - I have disable limting checks in the web project due to time constrain. I would NEVER do this in a real project.
+- In a real project I would have added testing code coverage checks in the CI, security scans (with snyk or similar), code maintainability scans (like code climate or similar), etc.
 
 **Some design/architecture decisions:**
 
