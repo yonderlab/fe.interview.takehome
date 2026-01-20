@@ -31,6 +31,7 @@ Cursor > Composer > Prompt "Generate a markdown explaining the domain entities, 
 - SSR has been ignored on prupose because it appears to be an user-related / private flow that doesn't has SEO requirements (this is an assumption and should be checke with the team and the PM).
 - I have ignoted the possibility of multiple currencies on purpose for simplify, but this should be checked with the team and the PM in a real project (or if you don't have these roles based on user needs or expansion business strategy).
 - I didn't look for a perfect solution, I have tried to show my way of work and way of thinking about how to structure UIs in React + Typescript.
+- I have created tests only in the EstimatesManagement feature components to showcase my testing skills.
 
 **Some design/architecture decisions:**
 
@@ -42,11 +43,13 @@ Cursor > Composer > Prompt "Generate a markdown explaining the domain entities, 
   - VenueSkeleton: it's an example of an iconography atom component. (But if you look at the implementation It would make more sense to have isolated the <svg> from the div and classes, which I would implement in a real project)
 - Atoms components are only to showcase my way of thinking about these components, we should have a complete library with all reusable atoms if possible.
 - I have decided to use tailwind for styles because LLMs comprehend properly the structure. This has allowed me to accelerate UI implementation.
+- I have contributed a cursor command to `create-tests` to accelerate my tests creation using cursor models/LLMs.
 
 **Some code repository & code organization decisions:**
 
 - The structure of the UI (the DOM elements in the browser) is reflected into the organization of folders inside the web/components architecture. Instead of using a components classification approach or a fractal organizational style, I preferred this approach becase it simplifies project comprehension, scales properly (allowed me to have very small components with concrete responsibilities and easy to maintain and evolve, easy to test also), you don't need cognitive charge to understand and jump between folders, etc. Simply: parent components has children components, so parent folder component has children folder components.
 - Every component has a folder `ComponentName`, a file `ComponentName.tsx` and the tests are close to the code following collocation code organization approach. In general, constants, functions, hooks, etc are close to the usage, simplifying comprehension, maintainability and refactoring (if you move a folder to another part of he structure you will move almost all relevant files). This make the file structure more flexinle and easy to refactor and scale.
+- In the future, if the custom hooks are reused
 
 **Some UX decisions**
 

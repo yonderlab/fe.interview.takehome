@@ -110,7 +110,7 @@ describe("API Integration Tests", () => {
         expect(typeof provider.name).toBe("string");
         expect(typeof provider.location).toBe("string");
         expect(
-          provider.logo_url === null || typeof provider.logo_url === "string",
+          provider.logo_url === null || typeof provider.logo_url === "string"
         ).toBe(true);
       });
     });
@@ -201,7 +201,7 @@ describe("API Integration Tests", () => {
 
       expect(typeof data.id).toBe("string");
       expect(["draft", "submitted", "pending_approval", "finalised"]).toContain(
-        data.status,
+        data.status
       );
       expect(data.plan).toHaveProperty("id");
       expect(data.plan).toHaveProperty("name");
@@ -256,7 +256,7 @@ describe("API Integration Tests", () => {
 
       expect(data.blocking_reasons.length).toBeGreaterThan(0);
       expect(
-        data.blocking_reasons.some((b) => b.includes("seating_type")),
+        data.blocking_reasons.some((b) => b.includes("seating_type"))
       ).toBe(true);
     });
 
@@ -278,7 +278,7 @@ describe("API Integration Tests", () => {
 
       expect(data.blocking_reasons.length).toBeGreaterThan(0);
       expect(
-        data.blocking_reasons.some((b) => b.includes("Invalid add-on")),
+        data.blocking_reasons.some((b) => b.includes("Invalid add-on"))
       ).toBe(true);
     });
 
