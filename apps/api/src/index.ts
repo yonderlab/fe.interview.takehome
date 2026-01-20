@@ -6,7 +6,22 @@ import { migrateOnStartup } from "./db/migrate.js";
 import { seedOnStartup } from "./db/seed.js";
 import { getProvidersRoute, getProviders } from "./routes/providers.js";
 import { getPlansRoute, getPlans } from "./routes/plans.js";
-import { getEstimateRoute, getEstimate, updateEstimateRoute, updateEstimate, finaliseEstimateRoute, finaliseEstimate } from "./routes/estimate.js";
+import {
+  getEstimateRoute,
+  getEstimate,
+  updateEstimateRoute,
+  updateEstimate,
+  finaliseEstimateRoute,
+  finaliseEstimate,
+  listEstimatesRoute,
+  listEstimates,
+  createEstimateRoute,
+  createEstimate,
+  getEstimateByIdRoute,
+  getEstimateById,
+  deleteEstimateRoute,
+  deleteEstimate,
+} from "./routes/estimate.js";
 
 const app = new OpenAPIHono();
 
@@ -33,6 +48,14 @@ app.openapi(getEstimateRoute, getEstimate as any);
 app.openapi(updateEstimateRoute, updateEstimate as any);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.openapi(finaliseEstimateRoute, finaliseEstimate as any);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.openapi(listEstimatesRoute, listEstimates as any);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.openapi(createEstimateRoute, createEstimate as any);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.openapi(getEstimateByIdRoute, getEstimateById as any);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.openapi(deleteEstimateRoute, deleteEstimate as any);
 
 // OpenAPI documentation endpoint (JSON)
 app.doc("/doc", {
@@ -40,7 +63,8 @@ app.doc("/doc", {
   info: {
     version: "1.0.0",
     title: "Event Ticketing API",
-    description: "API for managing event ticketing estimates with dynamic plan options and add-ons",
+    description:
+      "API for managing event ticketing estimates with dynamic plan options and add-ons",
   },
   servers: [
     {
@@ -56,7 +80,9 @@ app.get("/ui", swaggerUI({ url: "/doc" }));
 const port = Number(process.env.PORT) || 3002;
 
 console.log(`Server is running on port ${port}`);
-console.log(`OpenAPI documentation (JSON) available at http://localhost:${port}/doc`);
+console.log(
+  `OpenAPI documentation (JSON) available at http://localhost:${port}/doc`,
+);
 console.log(`Swagger UI available at http://localhost:${port}/ui`);
 
 serve({

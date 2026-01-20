@@ -120,27 +120,36 @@ export const planOptionGroupRelations = relations(
       references: [eventPlan.id],
     }),
     values: many(planOptionValue),
-  })
+  }),
 );
 
-export const planOptionValueRelations = relations(planOptionValue, ({ one }) => ({
-  optionGroup: one(planOptionGroup, {
-    fields: [planOptionValue.optionGroupId],
-    references: [planOptionGroup.id],
+export const planOptionValueRelations = relations(
+  planOptionValue,
+  ({ one }) => ({
+    optionGroup: one(planOptionGroup, {
+      fields: [planOptionValue.optionGroupId],
+      references: [planOptionGroup.id],
+    }),
   }),
-}));
+);
 
-export const eventEstimateRelations = relations(eventEstimate, ({ one, many }) => ({
-  plan: one(eventPlan, {
-    fields: [eventEstimate.planId],
-    references: [eventPlan.id],
+export const eventEstimateRelations = relations(
+  eventEstimate,
+  ({ one, many }) => ({
+    plan: one(eventPlan, {
+      fields: [eventEstimate.planId],
+      references: [eventPlan.id],
+    }),
+    blockers: many(estimateBlocker),
   }),
-  blockers: many(estimateBlocker),
-}));
+);
 
-export const estimateBlockerRelations = relations(estimateBlocker, ({ one }) => ({
-  estimate: one(eventEstimate, {
-    fields: [estimateBlocker.estimateId],
-    references: [eventEstimate.id],
+export const estimateBlockerRelations = relations(
+  estimateBlocker,
+  ({ one }) => ({
+    estimate: one(eventEstimate, {
+      fields: [estimateBlocker.estimateId],
+      references: [eventEstimate.id],
+    }),
   }),
-}));
+);

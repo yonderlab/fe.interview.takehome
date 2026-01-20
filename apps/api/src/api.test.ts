@@ -109,7 +109,9 @@ describe("API Integration Tests", () => {
         expect(typeof provider.id).toBe("string");
         expect(typeof provider.name).toBe("string");
         expect(typeof provider.location).toBe("string");
-        expect(provider.logo_url === null || typeof provider.logo_url === "string").toBe(true);
+        expect(
+          provider.logo_url === null || typeof provider.logo_url === "string",
+        ).toBe(true);
       });
     });
   });
@@ -119,7 +121,10 @@ describe("API Integration Tests", () => {
       const response = await fetch(`${API_URL}/plans`);
       expect(response.status).toBe(400);
 
-      const data = (await response.json()) as { success?: boolean; error?: unknown };
+      const data = (await response.json()) as {
+        success?: boolean;
+        error?: unknown;
+      };
       // OpenAPI validation returns ZodError format
       expect(data).toHaveProperty("success", false);
       expect(data).toHaveProperty("error");
@@ -195,7 +200,9 @@ describe("API Integration Tests", () => {
       const data = (await response.json()) as Estimate;
 
       expect(typeof data.id).toBe("string");
-      expect(["draft", "submitted", "pending_approval", "finalised"]).toContain(data.status);
+      expect(["draft", "submitted", "pending_approval", "finalised"]).toContain(
+        data.status,
+      );
       expect(data.plan).toHaveProperty("id");
       expect(data.plan).toHaveProperty("name");
       expect(data.pricing).toHaveProperty("base");
@@ -248,7 +255,9 @@ describe("API Integration Tests", () => {
       const data = (await response.json()) as Estimate;
 
       expect(data.blocking_reasons.length).toBeGreaterThan(0);
-      expect(data.blocking_reasons.some((b) => b.includes("seating_type"))).toBe(true);
+      expect(
+        data.blocking_reasons.some((b) => b.includes("seating_type")),
+      ).toBe(true);
     });
 
     it("should return blockers for invalid addon", async () => {
@@ -268,7 +277,9 @@ describe("API Integration Tests", () => {
       const data = (await response.json()) as Estimate;
 
       expect(data.blocking_reasons.length).toBeGreaterThan(0);
-      expect(data.blocking_reasons.some((b) => b.includes("Invalid add-on"))).toBe(true);
+      expect(
+        data.blocking_reasons.some((b) => b.includes("Invalid add-on")),
+      ).toBe(true);
     });
 
     it("should compute pricing correctly", async () => {

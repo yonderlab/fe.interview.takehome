@@ -10,17 +10,17 @@ const __dirname = dirname(__filename);
  */
 function getDbPath(): string {
   const dbUrl = process.env.DATABASE_URL;
-  
+
   if (dbUrl && dbUrl.startsWith("file:")) {
     // Extract path from file: URL
     return dbUrl.replace("file:", "");
   }
-  
+
   if (dbUrl) {
     // If it's not a file: URL, assume it's already a path
     return dbUrl;
   }
-  
+
   // Default location
   const apiRoot = join(__dirname, "..", "..");
   return join(apiRoot, ".data", "dev.db");
@@ -31,23 +31,23 @@ function getDbPath(): string {
  */
 export function wipeDatabase(): void {
   const dbPath = getDbPath();
-  
+
   if (existsSync(dbPath)) {
     unlinkSync(dbPath);
     console.log(`✓ Database file deleted: ${dbPath}`);
   } else {
     console.log(`ℹ Database file not found: ${dbPath}`);
   }
-  
+
   // Also clean up any WAL/SHM files that SQLite might create
   const walPath = `${dbPath}-wal`;
   const shmPath = `${dbPath}-shm`;
-  
+
   if (existsSync(walPath)) {
     unlinkSync(walPath);
     console.log(`✓ WAL file deleted: ${walPath}`);
   }
-  
+
   if (existsSync(shmPath)) {
     unlinkSync(shmPath);
     console.log(`✓ SHM file deleted: ${shmPath}`);

@@ -19,7 +19,7 @@ export interface ValidationResult {
  */
 export async function validateEstimate(
   planId: string,
-  selections: EstimateSelections
+  selections: EstimateSelections,
 ): Promise<ValidationResult> {
   const blockers: string[] = [];
 
@@ -57,8 +57,8 @@ export async function validateEstimate(
         .where(
           and(
             eq(planOptionValue.optionGroupId, group.id),
-            eq(planOptionValue.value, selectedValue)
-          )
+            eq(planOptionValue.value, selectedValue),
+          ),
         )
         .limit(1);
 
@@ -75,8 +75,8 @@ export async function validateEstimate(
           .where(
             and(
               eq(planOptionValue.optionGroupId, group.id),
-              eq(planOptionValue.value, selectedValue)
-            )
+              eq(planOptionValue.value, selectedValue),
+            ),
           )
           .limit(1);
 
@@ -90,7 +90,7 @@ export async function validateEstimate(
   // Validate add-ons belong to this plan
   if (selections.addons && Array.isArray(selections.addons)) {
     const validAddonIds = selections.addons.filter(
-      (id): id is string => typeof id === "string"
+      (id): id is string => typeof id === "string",
     );
 
     if (validAddonIds.length > 0) {
@@ -100,8 +100,8 @@ export async function validateEstimate(
         .where(
           and(
             eq(planAddon.planId, planId),
-            inArray(planAddon.id, validAddonIds)
-          )
+            inArray(planAddon.id, validAddonIds),
+          ),
         );
 
       const validIds = new Set(planAddons.map((a: { id: string }) => a.id));
@@ -109,7 +109,7 @@ export async function validateEstimate(
 
       if (invalidIds.length > 0) {
         blockers.push(
-          `Invalid add-on IDs for this plan: ${invalidIds.join(", ")}`
+          `Invalid add-on IDs for this plan: ${invalidIds.join(", ")}`,
         );
       }
     }
@@ -126,7 +126,7 @@ export async function validateEstimate(
  */
 export async function saveBlockers(
   estimateId: string,
-  blockers: string[]
+  blockers: string[],
 ): Promise<void> {
   // Delete existing blockers
   await db
@@ -140,7 +140,7 @@ export async function saveBlockers(
         id: `blocker_${estimateId}_${index}`,
         estimateId,
         reason,
-      }))
+      })),
     );
   }
 }

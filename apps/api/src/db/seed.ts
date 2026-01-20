@@ -72,7 +72,8 @@ export async function seedOnStartup(): Promise<void> {
         id: "plan_a_premium",
         providerId: "prov_a",
         name: "Venue A - Premium",
-        description: "Premium package with seating and food options, plus add-ons",
+        description:
+          "Premium package with seating and food options, plus add-ons",
         basePriceCents: 70000,
         currency: "EUR",
         approvalType: "manager_review",
@@ -96,7 +97,8 @@ export async function seedOnStartup(): Promise<void> {
         id: "plan_b_flex",
         providerId: "prov_b",
         name: "Venue B - Flex",
-        description: "Flexible package with seating and date flexibility options",
+        description:
+          "Flexible package with seating and date flexibility options",
         basePriceCents: 55000,
         currency: "EUR",
         approvalType: "none",

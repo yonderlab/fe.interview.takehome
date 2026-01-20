@@ -90,7 +90,9 @@ describe("validateEstimate", () => {
     const result = await validateEstimate("plan_a_premium", selections);
 
     expect(result.isValid).toBe(false);
-    expect(result.blockers.some((b) => b.includes("Invalid add-on IDs"))).toBe(true);
+    expect(result.blockers.some((b) => b.includes("Invalid add-on IDs"))).toBe(
+      true,
+    );
   });
 
   it("should return error for non-existent plan", async () => {
@@ -117,16 +119,19 @@ describe("saveBlockers", () => {
 
   it("should save blockers to database", async () => {
     const estimateId = `test_estimate_1_${Date.now()}`;
-    const blockers = ["Missing required field: seating_type", "Invalid add-on ID"];
+    const blockers = [
+      "Missing required field: seating_type",
+      "Invalid add-on ID",
+    ];
 
     // Create estimate first
     const { db } = await import("../db/index.js");
     const { eventEstimate } = await import("../db/schema.js");
     const { eq } = await import("drizzle-orm");
-    
+
     // Delete if exists
     await db.delete(eventEstimate).where(eq(eventEstimate.id, estimateId));
-    
+
     await db.insert(eventEstimate).values({
       id: estimateId,
       employerId: "test_employer",
@@ -156,10 +161,10 @@ describe("saveBlockers", () => {
     const { db } = await import("../db/index.js");
     const { eventEstimate } = await import("../db/schema.js");
     const { eq } = await import("drizzle-orm");
-    
+
     // Delete if exists
     await db.delete(eventEstimate).where(eq(eventEstimate.id, estimateId));
-    
+
     await db.insert(eventEstimate).values({
       id: estimateId,
       employerId: "test_employer",
@@ -189,10 +194,10 @@ describe("saveBlockers", () => {
     const { db } = await import("../db/index.js");
     const { eventEstimate } = await import("../db/schema.js");
     const { eq } = await import("drizzle-orm");
-    
+
     // Delete if exists
     await db.delete(eventEstimate).where(eq(eventEstimate.id, estimateId));
-    
+
     await db.insert(eventEstimate).values({
       id: estimateId,
       employerId: "test_employer",
