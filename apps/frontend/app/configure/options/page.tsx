@@ -23,11 +23,18 @@ export default function OptionsAddonsPage() {
     useConfiguration();
   const router = useRouter();
 
+  // Redirect if no data or plan
+  useEffect(() => {
+    if (!data?.estimate || !selectedPlan) {
+      router.replace("/configure");
+    }
+  }, [data?.estimate, selectedPlan, router]);
+
   // Auto-select single-value required options
   useEffect(() => {
-    if (!data?.estimate) return;
+    if (!data?.estimate || !selectedPlan) return;
     const autoSelected: Record<string, string> = {};
-    selectedPlan?.options.forEach((option) => {
+    selectedPlan.options.forEach((option) => {
       if (
         option.required &&
         Array.isArray(option.values) &&
@@ -39,7 +46,7 @@ export default function OptionsAddonsPage() {
     });
     if (Object.keys(autoSelected).length > 0) {
       mutate({
-        plan_id: selectedPlan?.id,
+        plan_id: selectedPlan.id,
         selections: {
           ...data.estimate.selections,
           ...autoSelected,
@@ -49,8 +56,8 @@ export default function OptionsAddonsPage() {
     }
   }, [selectedPlan?.id, selectedPlan?.options, data?.estimate, mutate]);
 
+  // Show nothing while redirecting
   if (!data?.estimate || !selectedPlan) {
-    router.push("/configure");
     return null;
   }
 
