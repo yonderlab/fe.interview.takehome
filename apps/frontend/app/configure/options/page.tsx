@@ -248,11 +248,18 @@ export default function OptionsAddonsPage() {
             )}
 
           <div className="border-t pt-4">
-            <p className="text-sm text-gray-500 mb-2">Total Price</p>
+            <p className="text-sm text-gray-500 mb-2" id="total-price-label">
+              Total Price
+            </p>
             <p
               className="text-3xl font-bold text-blue-600"
               role="status"
               aria-live="polite"
+              aria-labelledby="total-price-label"
+              aria-label={`Total price: ${currencyFormatter(
+                data?.estimate.pricing.currency,
+                data?.estimate.pricing.total / 100,
+              )}`}
             >
               {currencyFormatter(
                 data?.estimate.pricing.currency,
