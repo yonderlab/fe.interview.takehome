@@ -21,6 +21,7 @@ This monorepo contains a complete backend API implementation for an event ticket
 
 - **`design-doc.md`** - Backend API/DB design guide and specification
 - **`fe-interview-brief.md`** - Frontend take-home assessment brief
+- **`fe-implementation.md`** - Frontend implementation documentation (decisions, architecture, and tradeoffs)
 
 ## Quick Start
 
@@ -73,7 +74,7 @@ See [`apps/api/README.md`](apps/api/README.md) for detailed API documentation an
 
 ## Project Structure
 
-```
+```text
 take-home/
 ├── apps/
 │   └── api/              # Event Ticketing Backend API
